@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom'
 import { ref, get } from 'firebase/database';
 import { database } from '../firebase';
 
+import AddSoftware from './AddSoftware';
+
 const Account = () => {
 
   const{user, logout} = UserAuth()
@@ -41,11 +43,14 @@ const Account = () => {
 
   return (
     <div>
-      <h1>account</h1>
-      <p>User Email: {user && user.email}</p>
-      <p>User Role: {userRole}</p>
+      <div>
+        <h1>account</h1>
+        <p>User Email: {user && user.email}</p>
+        <p>User Role: {userRole}</p>
 
-      <button onClick={handleLogout}>Logout</button>
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+      <AddSoftware/>
     </div>
   )
 }
