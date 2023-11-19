@@ -1,6 +1,6 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import AddUser from "./components/AddUser";
 import Account from "./components/Account";
 import { AuthContextProvider } from "./context/AuthContext";
