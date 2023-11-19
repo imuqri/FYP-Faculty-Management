@@ -61,53 +61,66 @@ const AddSoftware = () => {
   };
 
   return (
-    <div>
-      <h2>Add Software</h2>
-      <div>
-        <label>Select or Add Software:</label>
-        <select
-            onChange={(e) => {
+    <div className="container mt-5">
+      <div className="card">
+        <div className="card-body">
+          <h2 className="card-title">Add Software</h2>
+          
+          <div className="mb-3">
+            <label className="form-label">Select or Add Software:</label>
+            <select
+              className="form-select"
+              onChange={(e) => {
                 const selectedValue = e.target.value;
                 if (selectedValue === 'new') {
-                setIsNewSoftware(true);
-                setSoftwareName('');
+                  setIsNewSoftware(true);
+                  setSoftwareName('');
                 } else {
-                setIsNewSoftware(false);
-                setSoftwareName(selectedValue);
+                  setIsNewSoftware(false);
+                  setSoftwareName(selectedValue);
                 }
-            }}
-            defaultValue="new" // Set the default value to 'new' for "Add New Software"
-        >
-            <option value="new">Add New Software</option>
-            {softwareOptions.map(software => (
+              }}
+              defaultValue="new"
+            >
+              <option value="new">Add New Software</option>
+              {softwareOptions.map(software => (
                 <option key={software.id} value={software.name}>
-                {software.name}
+                  {software.name}
                 </option>
-            ))}
-        </select>
-      </div>
+              ))}
+            </select>
+          </div>
 
-      {isNewSoftware && (
-        <div>
-          <label>New Software Name:</label>
-          <input
-            type="text"
-            value={softwareName}
-            onChange={(e) => setSoftwareName(e.target.value)}
-          />
+          {isNewSoftware && (
+            <div className="mb-3">
+              <label className="form-label">New Software Name:</label>
+              <input
+                type="text"
+                className="form-control"
+                value={softwareName}
+                onChange={(e) => setSoftwareName(e.target.value)}
+              />
+            </div>
+          )}
+
+          <div className="mb-3">
+            <label className="form-label">Software Version:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={softwareVersion}
+              onChange={(e) => setSoftwareVersion(e.target.value)}
+            />
+          </div>
+
+          <button
+            className="btn btn-primary"
+            onClick={handleAddSoftware}
+          >
+            Add Software
+          </button>
         </div>
-      )}
-
-      <div>
-        <label>Software Version:</label>
-        <input
-          type="text"
-          value={softwareVersion}
-          onChange={(e) => setSoftwareVersion(e.target.value)}
-        />
       </div>
-
-      <button onClick={handleAddSoftware}>Add Software</button>
     </div>
   );
 };
