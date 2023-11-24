@@ -5,6 +5,7 @@ import { ref, get } from 'firebase/database';
 import { database } from '../firebase';
 
 import AddSoftware from './AddSoftware';
+import AddEquipment from './AddEquipment';
 
 const Account = () => {
 
@@ -51,6 +52,11 @@ const Account = () => {
         <button onClick={handleLogout}>Logout</button>
       </div>
       <AddSoftware/>
+      <div/>
+      <AddEquipment/>
+      <div>
+
+      </div>
     </div>
   )
 }
