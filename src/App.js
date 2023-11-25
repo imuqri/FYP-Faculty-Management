@@ -2,9 +2,9 @@ import React from "react";
 import { Route, Routes } from "react-router-dom";
 import Login from "./pages/Login";
 import AddUser from "./components/AddUser";
-import Account from "./components/Account";
 import { AuthContextProvider } from "./context/AuthContext";
 import PrivateRoute from "./components/PrivateRoute";
+import Main from "./pages/Main";
 
 function App() {
   return (
@@ -14,10 +14,10 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/addUser" element={<AddUser />} />
           <Route
-            path="/account"
+            path="/main"
             element={
               <PrivateRoute>
-                <Account />
+                <Main />
               </PrivateRoute>
             }
           />

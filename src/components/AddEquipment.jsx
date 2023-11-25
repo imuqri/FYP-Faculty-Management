@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { ref, push } from 'firebase/database';
 import { database } from '../firebase';
 
+import { Container, Card, Form, Button } from 'react-bootstrap';
+
 const AddEquipment = () => {
   const [equipmentName, setEquipmentName] = useState('');
 
@@ -22,30 +24,26 @@ const AddEquipment = () => {
   };
 
   return (
-    <div className="container mt-5">
-      <div className="card">
-        <div className="card-body">
-          <h2 className="card-tittle">Add Equipment</h2>
+    <Container className="mt-5">
+      <Card>
+        <Card.Body>
+          <Card.Title as="h2">Add Equipment</Card.Title>
 
-          <div className="mb-3">
-            <label className="form-label">Equipment Name:</label>
-            <input
+          <Form.Group className="mb-3">
+            <Form.Label>Equipment Name:</Form.Label>
+            <Form.Control
               type="text"
-              className="form-control"
               value={equipmentName}
               onChange={(e) => setEquipmentName(e.target.value)}
             />
-          </div>
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleAddEquipment}
-          >
+          </Form.Group>
+
+          <Button variant="primary" onClick={handleAddEquipment}>
             Add Equipment
-          </button>
-        </div>
-      </div>
-    </div>
+          </Button>
+        </Card.Body>
+      </Card>
+    </Container>
   );
 };
 

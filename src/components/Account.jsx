@@ -1,17 +1,14 @@
-import React, {useEffect, useState} from 'react'
-import { UserAuth } from '../context/AuthContext'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { UserAuth } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { ref, get } from 'firebase/database';
 import { database } from '../firebase';
-
-import AddSoftware from './AddSoftware';
-import AddEquipment from './AddEquipment';
+import { Card, Button } from 'react-bootstrap';
 
 const Account = () => {
-
-  const{user, logout} = UserAuth()
+  const { user, logout } = UserAuth();
   const [userRole, setUserRole] = useState();
-  const navigate = useNavigate() 
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Fetch the user role when the component mounts
@@ -34,31 +31,30 @@ const Account = () => {
 
   const handleLogout = async () => {
     try {
-      await logout()
-      navigate('/')
-      console.log('logged out')
+      await logout();
+      navigate('/');
+      console.log('logged out');
     } catch (e) {
-      console.log(e.message)
+      console.log(e.message);
     }
-  }
+  };
 
   return (
-    <div>
-      <div>
-        <h1>account</h1>
-        <p>User Email: {user && user.email}</p>
-        <p>User Role: {userRole}</p>
-
-        <button onClick={handleLogout}>Logout</button>
-      </div>
-      <AddSoftware/>
-      <div/>
-      <AddEquipment/>
-      <div>
-
-      </div>
+    <div className="container mt-5">
+      <Card>
+        <Card.Body>
+          <Card.Title as="h2">Account</Card.Title>
+          <Card.Text>
+            <p>User Email: {user && user.email}</p>
+            <p>User Role: {userRole}</p>
+          </Card.Text>
+          <Button variant="primary" onClick={handleLogout}>
+            Logout
+          </Button>
+        </Card.Body>
+      </Card>
     </div>
-  )
-}
+  );
+};
 
-export default Account
+export default Account;

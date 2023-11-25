@@ -16,7 +16,7 @@ const Login = () => {
     setError('');
     try {
       await login(email, password);
-      navigate('/account');
+      navigate('/main');
     } catch (e) {
       setError(e.message);
       console.log(e.message);
