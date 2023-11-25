@@ -23,25 +23,28 @@ const AddEquipment = () => {
 
   return (
     <div className="container mt-5">
-      <h2>Add Equipment</h2>
+      <div className="card">
+        <div className="card-body">
+          <h2 className="card-tittle">Add Equipment</h2>
 
-      <div className="mb-3">
-        <label className="form-label">Equipment Name:</label>
-        <input
-          type="text"
-          className="form-control"
-          value={equipmentName}
-          onChange={(e) => setEquipmentName(e.target.value)}
-        />
+          <div className="mb-3">
+            <label className="form-label">Equipment Name:</label>
+            <input
+              type="text"
+              className="form-control"
+              value={equipmentName}
+              onChange={(e) => setEquipmentName(e.target.value)}
+            />
+          </div>
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleAddEquipment}
+          >
+            Add Equipment
+          </button>
+        </div>
       </div>
-
-      <button
-        type="button"
-        className="btn btn-primary"
-        onClick={handleAddEquipment}
-      >
-        Add Equipment
-      </button>
     </div>
   );
 };
