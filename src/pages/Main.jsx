@@ -3,6 +3,8 @@ import AddEquipment from '../components/AddEquipment';
 import AddSoftware from '../components/AddSoftware';
 import Account from '../components/Account';
 import AddUser from '../components/AddUser';
+import SoftwareList from '../components/SoftwareList';
+
 
 const Main = () => {
   return (
@@ -17,6 +19,9 @@ const Main = () => {
       </div>
       <div>
         <AddSoftware/>
+      </div>
+      <div>
+        <SoftwareList/>
       </div>
       <div>
         <AddEquipment/>
