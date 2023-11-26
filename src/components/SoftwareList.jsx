@@ -177,7 +177,7 @@ const SoftwareList = () => {
       ))}
 
       {/* Edit Software Modal */}
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+      <Modal show={showEditModal} onHide={() => setShowEditModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Software Name</Modal.Title>
         </Modal.Header>
@@ -200,7 +200,7 @@ const SoftwareList = () => {
       </Modal>
 
       {/* Edit Version Modal */}
-      <Modal show={showEditVersionModal} onHide={() => setShowEditVersionModal(false)}>
+      <Modal show={showEditVersionModal} onHide={() => setShowEditVersionModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Edit Version</Modal.Title>
         </Modal.Header>
@@ -223,7 +223,7 @@ const SoftwareList = () => {
       </Modal>
 
       {/* Add Version Modal */}
-      <Modal show={showAddVersionModal} onHide={() => setShowAddVersionModal(false)}>
+      <Modal show={showAddVersionModal} onHide={() => setShowAddVersionModal(false)}centered>
         <Modal.Header closeButton>
           <Modal.Title>Add Version</Modal.Title>
         </Modal.Header>
