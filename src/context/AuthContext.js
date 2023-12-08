@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }) => {
         email: user.email,
         role: role,
       });
-
+      console.log("User created successfully");
       return userCredential;
     } catch (error) {
       console.error("Error creating user:", error);

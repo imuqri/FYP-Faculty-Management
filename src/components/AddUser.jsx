@@ -1,19 +1,19 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { UserAuth } from '../context/AuthContext';
-import { Card, Form, Button } from 'react-bootstrap';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
+import { Card, Form, Button } from "react-bootstrap";
 
 const AddUser = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [role, setRole] = useState('User'); // Default role is 'user'
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [role, setRole] = useState("User"); // Default role is 'user'
 
   const { createUser } = UserAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError('');
+    setError("");
     try {
       await createUser(email, password, role);
     } catch (e) {
@@ -27,20 +27,30 @@ const AddUser = () => {
       <Card>
         <Card.Body>
           <Card.Title as="h2">Add User</Card.Title>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group controlId="formEmail" className='mb-3'>
+          <Form onSubmit={(e) => handleSubmit(e)}>
+            <Form.Group controlId="formEmail" className="mb-3">
               <Form.Label>Email Address</Form.Label>
-              <Form.Control type="email" onChange={(e) => setEmail(e.target.value)} />
+              <Form.Control
+                type="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </Form.Group>
 
-            <Form.Group controlId="formPassword" className='mb-3'>
+            <Form.Group controlId="formPassword" className="mb-3">
               <Form.Label>Password</Form.Label>
-              <Form.Control type="password" onChange={(e) => setPassword(e.target.value)} />
+              <Form.Control
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
             </Form.Group>
 
-            <Form.Group controlId="formRole" className='mb-3'>
+            <Form.Group controlId="formRole" className="mb-3">
               <Form.Label>Role</Form.Label>
-              <Form.Control as="select" onChange={(e) => setRole(e.target.value)} value={role}>
+              <Form.Control
+                as="select"
+                onChange={(e) => setRole(e.target.value)}
+                value={role}
+              >
                 <option value="User">User</option>
                 <option value="Technician">Technician</option>
                 <option value="Technician Admin">Technician Admin</option>
@@ -49,12 +59,10 @@ const AddUser = () => {
                 <option value="Super Admin">Super Admin</option>
               </Form.Control>
             </Form.Group>
-          </Form>
-
-          <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit">
               Add User
-          </Button>
-          
+            </Button>
+          </Form>
         </Card.Body>
       </Card>
     </div>

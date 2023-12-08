@@ -3,6 +3,7 @@ import { ref, onValue, remove, update } from "firebase/database";
 import { database } from "../firebase";
 import { Button, Card, Nav, Tab, Form, Modal } from "react-bootstrap";
 import { MdOutlineDeleteForever, MdOutlineEditNote } from "react-icons/md";
+import { IoIosArrowDown } from "react-icons/io";
 
 const UserList = () => {
   const [userList, setUserList] = useState([]);
@@ -138,7 +139,11 @@ const UserList = () => {
       </Tab.Container>
 
       {/* Edit User Modal */}
-      <Modal show={showEditModal} onHide={() => setShowEditModal(false)}>
+      <Modal
+        show={showEditModal}
+        onHide={() => setShowEditModal(false)}
+        centered
+      >
         <Modal.Header closeButton>
           <Modal.Title>Edit User</Modal.Title>
         </Modal.Header>
@@ -151,19 +156,26 @@ const UserList = () => {
               onChange={(e) => setEditEmail(e.target.value)}
             />
           </Form.Group>
-          <Form.Group controlId="formEditRole">
+          <Form.Group controlId="formEditRole" className="mb-3">
             <Form.Label>Role</Form.Label>
-            <Form.Control
-              as="select"
-              value={editRole}
-              onChange={(e) => setEditRole(e.target.value)}
-            >
-              {uniqueRoles.map((role) => (
-                <option key={role} value={role}>
-                  {role}
-                </option>
-              ))}
-            </Form.Control>
+            <div className="position-relative">
+              <Form.Control
+                as="select"
+                onChange={(e) => setEditRole(e.target.value)}
+                value={editRole}
+              >
+                <option value="User">User</option>
+                <option value="Technician">Technician</option>
+                <option value="Technician Admin">Technician Admin</option>
+                <option value="Class Admin">Class Admin</option>
+                <option value="Lab Admin">Lab Admin</option>
+                <option value="Super Admin">Super Admin</option>
+              </Form.Control>
+              <IoIosArrowDown
+                className="position-absolute top-50 translate-middle-y end-0 pe-2"
+                style={{ pointerEvents: "none" }}
+              />
+            </div>
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
