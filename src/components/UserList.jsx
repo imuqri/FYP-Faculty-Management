@@ -7,7 +7,6 @@ import { IoIosArrowDown } from "react-icons/io";
 
 const UserList = () => {
   const [userList, setUserList] = useState([]);
-  const [uniqueRoles, setUniqueRoles] = useState([]);
   const [activeRole, setActiveRole] = useState("All");
   const [selectedUser, setSelectedUser] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
@@ -32,7 +31,6 @@ const UserList = () => {
         setUserList(sortedUserList);
 
         const roles = [...new Set(sortedUserList.map((user) => user.role))];
-        setUniqueRoles(roles);
       }
     });
   }, []);
