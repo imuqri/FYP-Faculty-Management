@@ -5,6 +5,7 @@ import Account from "../components/Account";
 import AddUser from "../components/AddUser";
 import SoftwareList from "../components/SoftwareList";
 import EquipmentList from "../components/EquipmentList";
+import UserList from "../components/UserList";
 
 const Main = () => {
   return (
@@ -29,6 +30,9 @@ const Main = () => {
       <div>
         <EquipmentList />
       </div>
+      <div></div>
+        <UserList />
+      <div></div>
     </div>
   );
 };
