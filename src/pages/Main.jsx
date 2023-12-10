@@ -19,6 +19,9 @@ const Main = () => {
         <AddUser />
       </div>
       <div>
+        <UserList />
+      </div>
+      <div>
         <AddSoftware />
       </div>
       <div>
@@ -29,10 +32,16 @@ const Main = () => {
       </div>
       <div>
         <EquipmentList />
+      </div> 
+      <div>
+        
       </div>
-      <div></div>
-        <UserList />
-      <div></div>
+      <div>
+
+      </div>
+      <div>
+
+      </div>
     </div>
   );
 };
