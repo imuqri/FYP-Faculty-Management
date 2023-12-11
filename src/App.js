@@ -4,12 +4,17 @@ import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Layout } from "antd";
 import Login from "./pages/Login";
-import AddUser from "./components/AddUser";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
-import Main from "./pages/Main";
+
 import Sidebar from "./components/layouts/Sidebar";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
+
+import Main from "./pages/Main";
+import UsersPage from "./pages/UsersPage";
+import SoftwaresPage from "./pages/SoftwaresPage";
+import EquipmentsPage from "./pages/EquipmentsPage";
+import Account from "./components/Account";
 
 const { Sider } = Layout;
 
@@ -30,11 +35,13 @@ function App() {
             <Sidebar />
           </Sider>
           <Layout className="site-layout" style={{ marginLeft: 200 }}>
-            <Header />
             <Routes>
               <Route path="/" element={<Navigate to="/main" />} />
-              <Route path="/addUser" element={<AddUser />} />
               <Route path="/main" element={<Main />} />
+              <Route path="/addUser" element={<UsersPage />} />
+              <Route path="/addSoftware" element={<SoftwaresPage />} />
+              <Route path="/addEquipment" element={<EquipmentsPage />} />
+              <Route path="/account" element={<Account />} />
             </Routes>
             <Footer />
           </Layout>
