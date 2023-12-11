@@ -7,8 +7,10 @@ import SoftwareList from "../components/SoftwareList";
 import EquipmentList from "../components/EquipmentList";
 import UserList from "../components/UserList";
 
+
 const Main = () => {
   return (
+    
     <div className="mb-5">
       <h1>ALL COMPONENT</h1>
 
