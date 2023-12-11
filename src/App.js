@@ -1,4 +1,4 @@
-// App.jsx
+// App.js
 
 import React from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
@@ -6,11 +6,12 @@ import { Layout } from "antd";
 import Login from "./pages/Login";
 import AddUser from "./components/AddUser";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
-import PrivateRoute from "./components/PrivateRoute";
 import Main from "./pages/Main";
-import Sidebar from "./components/Sidebar";
+import Sidebar from "./components/layouts/Sidebar";
+import Header from "./components/layouts/Header";
+import Footer from "./components/layouts/Footer";
 
-const { Content, Sider } = Layout;
+const { Sider } = Layout;
 
 function App() {
   const { user } = UserAuth();
@@ -20,24 +21,27 @@ function App() {
     if (user) {
       return (
         <Layout style={{ minHeight: "100vh" }}>
-          <Sider width={80} theme="dark">
+          <Sider
+            width={200}
+            theme="dark"
+            style={{ position: "fixed", height: "100vh" }}
+          >
+            {/* Sidebar component */}
             <Sidebar />
           </Sider>
-          <Layout className="site-layout">
-            <Content style={{ margin: "16px", padding: 24, minHeight: 360 }}>
-              {/* Render your component based on the route */}
-              <Routes>
-                <Route path="/" element={<Navigate to="/main" />} />
-                <Route path="/addUser" element={<AddUser />} />
-                <Route path="/main" element={<Main />} />
-              </Routes>
-            </Content>
+          <Layout className="site-layout" style={{ marginLeft: 200 }}>
+            <Header />
+            <Routes>
+              <Route path="/" element={<Navigate to="/main" />} />
+              <Route path="/addUser" element={<AddUser />} />
+              <Route path="/main" element={<Main />} />
+            </Routes>
+            <Footer />
           </Layout>
         </Layout>
       );
     } else {
       return (
-        // Render the Login page if the user is not authenticated
         <Routes>
           <Route path="/" element={<Login />} />
         </Routes>
