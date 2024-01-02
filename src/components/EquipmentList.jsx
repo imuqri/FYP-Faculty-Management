@@ -54,7 +54,7 @@ const EquipmentList = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-2">
       <h2>Equipment List</h2>
       <ListGroup>
         {equipmentList.map((equipment) => (

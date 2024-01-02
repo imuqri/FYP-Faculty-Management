@@ -1,6 +1,6 @@
-import React from 'react'
-import { Navigate } from 'react-router-dom'
-import { UserAuth } from '../context/AuthContext'
+import React from "react";
+import { Navigate } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
 
 const PrivateRoute = ({ children }) => {
   const { user } = UserAuth();
@@ -14,4 +14,4 @@ const PrivateRoute = ({ children }) => {
   );
 };
 
-export default PrivateRoute
+export default PrivateRoute;

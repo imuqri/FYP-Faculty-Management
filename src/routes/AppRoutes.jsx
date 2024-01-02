@@ -5,12 +5,11 @@ import AddUser from "../pages/UsersPage";
 import AddSoftware from "../pages/SoftwaresPage";
 import AddEquipment from "../pages/EquipmentsPage";
 import Account from "../components/Account";
-import Login from "../pages/Login";
+import PrivateRoute from "./PrivateRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
       <Route path="/home" element={<Home />} />
       <Route path="/addUser" element={<AddUser />} />
       <Route path="/addSoftware" element={<AddSoftware />} />

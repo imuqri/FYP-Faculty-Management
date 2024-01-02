@@ -11,7 +11,7 @@ const Softwares = () => {
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-3">
       <Card>
         <Card.Header className="d-flex justify-content-end">
           <Button variant="primary" onClick={toggleModal}>

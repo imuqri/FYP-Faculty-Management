@@ -3,25 +3,19 @@
 import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import { Layout, theme } from "antd";
-import Login from "./pages/Login";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
 import Sidebar from "./components/layouts/Sidebar";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
 import AppRoutes from "./routes/AppRoutes";
 
+import Login from "./pages/Login";
 import Main from "./pages/Main";
-import UsersPage from "./pages/UsersPage";
-import SoftwaresPage from "./pages/SoftwaresPage";
-import EquipmentsPage from "./pages/EquipmentsPage";
-import Account from "./components/Account";
-
-import { BrowserRouter as Router } from "react-router-dom";
 
 const { Sider, Content } = Layout;
 
 function App() {
-  const { user } = UserAuth(); //check auth user
+  const { user } = UserAuth(); // check auth user
 
   const [collapsed, setCollapsed] = useState(false);
   const {
@@ -43,6 +37,11 @@ function App() {
               collapsed={collapsed}
               collapsedWidth={collapsedWidth}
               width={sidebarMaxWidth}
+              style={{
+                position: "fixed", // Set sidebar to have a fixed position
+                height: "100%", // Make sidebar take the full height of the viewport
+                zIndex: 1, // Make sidebar appear above content
+              }}
             >
               <Sidebar collapsed={collapsed} />
             </Sider>
@@ -50,7 +49,8 @@ function App() {
               <Header collapsed={collapsed} setCollapsed={setCollapsed} />
               <Content
                 style={{
-                  margin: "24px 16px",
+                  margin: "24px 20px",
+                  marginLeft: collapsedWidth + 20,
                   padding: 24,
                   minHeight: 280,
                   background: colorBgContainer,
