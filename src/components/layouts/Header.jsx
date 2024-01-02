@@ -44,6 +44,8 @@ const Header = ({ collapsed, setCollapsed }) => {
         background: "#FFFFFF",
         boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
         padding: "0 16px",
+        position: "fixed",
+        width: "100%",
         zIndex: "2",
       }}
     >

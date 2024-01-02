@@ -15,3 +15,7 @@ code {
 .ant-menu-item a {
   text-decoration: none;
 }
+
+.ant-menu-item-selected {
+  background-color: #312466 !important;
+}

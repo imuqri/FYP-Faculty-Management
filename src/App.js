@@ -41,6 +41,7 @@ function App() {
                 position: "fixed", // Set sidebar to have a fixed position
                 height: "100%", // Make sidebar take the full height of the viewport
                 zIndex: 1, // Make sidebar appear above content
+                boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
               }}
             >
               <Sidebar collapsed={collapsed} />
@@ -50,7 +51,8 @@ function App() {
               <Content
                 style={{
                   margin: "24px 20px",
-                  marginLeft: collapsedWidth + 20,
+                  marginLeft: collapsedWidth + 40,
+                  marginTop: 100,
                   padding: 24,
                   minHeight: 280,
                   background: colorBgContainer,
