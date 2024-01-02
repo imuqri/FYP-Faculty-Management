@@ -1,20 +1,15 @@
-// Footer.js
-
 import React from "react";
+import { Layout } from "antd";
 
 const Footer = () => {
   return (
-    <footer
+    <Layout.Footer
       style={{
         textAlign: "center",
-        width: "100%",
-        bottom: 0,
-        marginBottom: 10,
       }}
     >
-      {/*Footer content*/}
-      KPPIM Facility Management System ©{new Date().getFullYear()}
-    </footer>
+      KPPIM Faculty Facility Management System V1 ©2023 Created by imuqri
+    </Layout.Footer>
   );
 };
 

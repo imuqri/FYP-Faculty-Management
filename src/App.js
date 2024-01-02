@@ -1,14 +1,14 @@
 // App.js
 
-import React from "react";
+import React, { useState } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
-import { Layout } from "antd";
+import { Layout, theme } from "antd";
 import Login from "./pages/Login";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
-
 import Sidebar from "./components/layouts/Sidebar";
 import Header from "./components/layouts/Header";
 import Footer from "./components/layouts/Footer";
+import AppRoutes from "./routes/AppRoutes";
 
 import Main from "./pages/Main";
 import UsersPage from "./pages/UsersPage";
@@ -16,50 +16,60 @@ import SoftwaresPage from "./pages/SoftwaresPage";
 import EquipmentsPage from "./pages/EquipmentsPage";
 import Account from "./components/Account";
 
-const { Sider } = Layout;
+import { BrowserRouter as Router } from "react-router-dom";
+
+const { Sider, Content } = Layout;
 
 function App() {
-  const { user } = UserAuth();
+  const { user } = UserAuth(); //check auth user
 
-  // Render the Sidebar and Routes only if the user is authenticated
-  const renderContent = () => {
-    if (user) {
-      return (
-        <Layout style={{ minHeight: "100vh" }}>
-          <Sider
-            width={200}
-            theme="dark"
-            style={{ position: "fixed", height: "100vh" }}
-          >
-            {/* Sidebar component */}
-            <Sidebar />
-          </Sider>
-          <Layout className="site-layout" style={{ marginLeft: 200 }}>
-            <Routes>
-              <Route path="/" element={<Navigate to="/main" />} />
-              <Route path="/main" element={<Main />} />
-              <Route path="/addUser" element={<UsersPage />} />
-              <Route path="/addSoftware" element={<SoftwaresPage />} />
-              <Route path="/addEquipment" element={<EquipmentsPage />} />
-              <Route path="/account" element={<Account />} />
-            </Routes>
-            <Footer />
-          </Layout>
-        </Layout>
-      );
-    } else {
-      return (
-        <Routes>
-          <Route path="/" element={<Login />} />
-        </Routes>
-      );
-    }
-  };
+  const [collapsed, setCollapsed] = useState(false);
+  const {
+    token: { colorBgContainer, borderRadiusLG },
+  } = theme.useToken();
+
+  const isMobile = window.innerWidth <= 768;
+  const collapsedWidth = isMobile ? 0 : 60;
+  const sidebarMaxWidth = isMobile ? 75 : 200;
 
   return (
-    <div>
-      <AuthContextProvider>{renderContent()}</AuthContextProvider>
-    </div>
+    <AuthContextProvider>
+      <Layout style={{ minHeight: "100vh" }}>
+        {user ? (
+          <>
+            <Sider
+              trigger={null}
+              collapsible
+              collapsed={collapsed}
+              collapsedWidth={collapsedWidth}
+              width={sidebarMaxWidth}
+            >
+              <Sidebar collapsed={collapsed} />
+            </Sider>
+            <Layout>
+              <Header collapsed={collapsed} setCollapsed={setCollapsed} />
+              <Content
+                style={{
+                  margin: "24px 16px",
+                  padding: 24,
+                  minHeight: 280,
+                  background: colorBgContainer,
+                  borderRadius: borderRadiusLG,
+                  boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+                }}
+              >
+                <AppRoutes />
+              </Content>
+              <Footer />
+            </Layout>
+          </>
+        ) : (
+          <Routes>
+            <Route path="/" element={<Login />} />
+          </Routes>
+        )}
+      </Layout>
+    </AuthContextProvider>
   );
 }
 

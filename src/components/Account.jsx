@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { UserAuth } from '../context/AuthContext';
-import { useNavigate } from 'react-router-dom';
-import { ref, get } from 'firebase/database';
-import { database } from '../firebase';
-import { Card, Button } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { UserAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { ref, get } from "firebase/database";
+import { database } from "../firebase";
+import { Card, Button } from "react-bootstrap";
 
 const Account = () => {
   const { user, logout } = UserAuth();
@@ -22,7 +22,7 @@ const Account = () => {
           }
         }
       } catch (error) {
-        console.error('Error fetching user role:', error);
+        console.error("Error fetching user role:", error);
       }
     };
 
@@ -32,8 +32,8 @@ const Account = () => {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate('/');
-      console.log('logged out');
+      navigate("/");
+      console.log("logged out");
     } catch (e) {
       console.log(e.message);
     }

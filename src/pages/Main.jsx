@@ -6,11 +6,10 @@ import AddUser from "../components/AddUser";
 import SoftwareList from "../components/SoftwareList";
 import EquipmentList from "../components/EquipmentList";
 import UserList from "../components/UserList";
-
+import AddLab from "../components/AddLab";
 
 const Main = () => {
   return (
-    
     <div className="mb-5">
       <h1>ALL COMPONENT</h1>
 
@@ -34,16 +33,12 @@ const Main = () => {
       </div>
       <div>
         <EquipmentList />
-      </div> 
-      <div>
-        
       </div>
       <div>
-
+        <AddLab />
       </div>
-      <div>
-
-      </div>
+      <div></div>
+      <div></div>
     </div>
   );
 };
