@@ -23,7 +23,7 @@ const AddUser = () => {
   };
 
   return (
-    <div className="container mt-5">
+    <div className="container mt-1">
       <Card>
         <Card.Body>
           <Card.Title as="h2">Add User</Card.Title>

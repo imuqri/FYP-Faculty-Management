@@ -41,8 +41,8 @@ const Header = ({ collapsed, setCollapsed }) => {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
-        background: "#FFFFFF",
-        boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
+        background: "#312466",
+        boxShadow: "0 5px 10px rgba(0, 0, 0, 0.2)",
         padding: "0 16px",
         position: "fixed",
         width: "100%",
@@ -57,7 +57,7 @@ const Header = ({ collapsed, setCollapsed }) => {
           fontSize: "16px",
           width: 64,
           height: 64,
-          background: "#FFFFFF",
+          color: "white",
         }}
       />
 
@@ -74,7 +74,7 @@ const Header = ({ collapsed, setCollapsed }) => {
             fontSize: "16px",
             width: 64,
             height: 64,
-            background: "#FFFFFF",
+            color: "white",
           }}
         />
       </Dropdown>

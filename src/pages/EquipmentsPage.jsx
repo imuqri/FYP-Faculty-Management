@@ -13,9 +13,14 @@ const Equipments = () => {
   return (
     <Container className="mt-5">
       <Card>
-        <Card.Header className="d-flex justify-content-end">
-          <Button variant="primary" onClick={toggleModal}>
-            Add Equipment
+        <Card.Header className="d-flex justify-content-between">
+          <h3>EQUIPMENT</h3>
+          <Button
+            variant="success"
+            style={{ width: "40px" }}
+            onClick={toggleModal}
+          >
+            +
           </Button>
         </Card.Header>
         <Card.Body>

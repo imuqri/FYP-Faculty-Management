@@ -24,7 +24,7 @@ function App() {
 
   const isMobile = window.innerWidth <= 768;
   const collapsedWidth = isMobile ? 0 : 60;
-  const sidebarMaxWidth = isMobile ? 75 : 200;
+  const sidebarMaxWidth = isMobile ? 170 : 200;
 
   return (
     <AuthContextProvider>
@@ -50,9 +50,10 @@ function App() {
               <Header collapsed={collapsed} setCollapsed={setCollapsed} />
               <Content
                 style={{
-                  margin: "24px 20px",
-                  marginLeft: collapsedWidth + 40,
-                  marginTop: 100,
+                  marginTop: 80,
+                  margin: "80px auto", // Center the content vertically
+                  maxWidth: 1400, // Set the maximum width
+                  width: "100%",
                   padding: 24,
                   minHeight: 280,
                   background: colorBgContainer,

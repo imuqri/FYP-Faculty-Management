@@ -5,11 +5,19 @@ import AddUser from "../pages/UsersPage";
 import AddSoftware from "../pages/SoftwaresPage";
 import AddEquipment from "../pages/EquipmentsPage";
 import Account from "../components/Account";
-import PrivateRoute from "./PrivateRoute";
+import { UserAuth } from "../context/AuthContext";
+import Login from "../pages/Login";
 
 const AppRoutes = () => {
+  const { user } = UserAuth();
+
   return (
     <Routes>
+      {user ? (
+        <Route path="/" element={<Navigate to="/" />} />
+      ) : (
+        <Route path="/" element={<Login />} />
+      )}
       <Route path="/home" element={<Home />} />
       <Route path="/addUser" element={<AddUser />} />
       <Route path="/addSoftware" element={<AddSoftware />} />

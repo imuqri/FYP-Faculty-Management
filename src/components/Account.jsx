@@ -42,13 +42,17 @@ const Account = () => {
   return (
     <div className="container mt-5">
       <Card>
-        <Card.Body>
+        <Card.Body className="d-flex flex-column">
           <Card.Title as="h2">Account</Card.Title>
           <Card.Text>
             <p>User Email: {user && user.email}</p>
             <p>User Role: {userRole}</p>
           </Card.Text>
-          <Button variant="primary" onClick={handleLogout}>
+          <Button
+            variant="primary"
+            className="align-self-end"
+            onClick={handleLogout}
+          >
             Logout
           </Button>
         </Card.Body>

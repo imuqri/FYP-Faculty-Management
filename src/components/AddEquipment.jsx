@@ -1,32 +1,32 @@
-import React, { useState } from 'react';
-import { ref, push } from 'firebase/database';
-import { database } from '../firebase';
+import React, { useState } from "react";
+import { ref, push } from "firebase/database";
+import { database } from "../firebase";
 
-import { Container, Card, Form, Button } from 'react-bootstrap';
+import { Container, Card, Form, Button } from "react-bootstrap";
 
 const AddEquipment = () => {
-  const [equipmentName, setEquipmentName] = useState('');
+  const [equipmentName, setEquipmentName] = useState("");
 
   const handleAddEquipment = () => {
     if (equipmentName) {
-      const equipmentRef = ref(database, 'equipments'); // Reference to the "equipment" node
+      const equipmentRef = ref(database, "equipments"); // Reference to the "equipment" node
       push(equipmentRef, { name: equipmentName })
         .then(() => {
-          console.log('Equipment added successfully.');
-          setEquipmentName('');
+          console.log("Equipment added successfully.");
+          setEquipmentName("");
         })
-        .catch(error => {
-          console.error('Error adding equipment:', error);
+        .catch((error) => {
+          console.error("Error adding equipment:", error);
         });
     } else {
-      console.error('Please enter equipment name.');
+      console.error("Please enter equipment name.");
     }
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-3 mb-3">
       <Card>
-        <Card.Body>
+        <Card.Body className="d-flex flex-column">
           <Card.Title as="h2">Add Equipment</Card.Title>
 
           <Form.Group className="mb-3">
@@ -38,7 +38,11 @@ const AddEquipment = () => {
             />
           </Form.Group>
 
-          <Button variant="primary" onClick={handleAddEquipment}>
+          <Button
+            variant="primary"
+            onClick={handleAddEquipment}
+            className="align-self-end"
+          >
             Add Equipment
           </Button>
         </Card.Body>

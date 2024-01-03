@@ -242,83 +242,87 @@ const SoftwareList = () => {
 
   return (
     <div className="container mt-2">
-      <h2>Software List</h2>
-      {softwareList.map((software, softwareIndex) => (
-        <Card key={software.id} className="mb-3">
-          <Card.Header className="d-flex justify-content-between align-items-center">
-            <div
-              onClick={() => toggleSoftware(softwareIndex)}
-              style={{ cursor: "pointer" }}
-            >
-              {openSoftwareList.includes(softwareIndex) ? (
-                <BsChevronUp />
-              ) : (
-                <BsChevronDown />
-              )}
-              {software.name}
-            </div>
-            <div>
-              <Button
-                variant="primary"
-                className="me-2"
-                onClick={() => handleShowEditModal(software.id)}
+      {softwareList
+        .sort((a, b) => a.name.localeCompare(b.name))
+        .map((software, softwareIndex) => (
+          <Card key={software.id} className="mb-2">
+            <Card.Header className="d-flex justify-content-between align-items-center">
+              <div
+                onClick={() => toggleSoftware(softwareIndex)}
+                style={{ cursor: "pointer" }}
               >
-                <MdOutlineEditNote />
-              </Button>
-              <Button
-                variant="danger"
-                onClick={() => handleDeleteSoftware(software.id)}
-              >
-                <MdOutlineDeleteForever />
-              </Button>
-            </div>
-          </Card.Header>
-          {openSoftwareList.includes(softwareIndex) && (
-            <Card.Body>
-              <ListGroup>
-                {software.versions.map((version, versionIndex) => (
-                  <ListGroup.Item
-                    key={versionIndex}
-                    className="d-flex justify-content-between align-items-center"
-                  >
-                    {version}
-                    <div>
-                      <Button
-                        variant="primary"
-                        className="me-2"
-                        onClick={() =>
-                          handleShowEditVersionModal(
-                            softwareIndex,
-                            versionIndex
-                          )
-                        }
-                      >
-                        <MdOutlineEditNote />
-                      </Button>
-                      <Button
-                        variant="danger"
-                        onClick={() =>
-                          handleDeleteVersion(softwareIndex, versionIndex)
-                        }
-                      >
-                        <MdOutlineDeleteForever />
-                      </Button>
-                    </div>
-                  </ListGroup.Item>
-                ))}
-              </ListGroup>
-              <Button
-                variant="success"
-                className="mt-3"
-                onClick={() => handleShowAddVersionModal(software)}
-              >
-                Add Version
-              </Button>
-            </Card.Body>
-          )}
-        </Card>
-      ))}
-
+                {openSoftwareList.includes(softwareIndex) ? (
+                  <BsChevronUp />
+                ) : (
+                  <BsChevronDown />
+                )}
+                {software.name}
+              </div>
+              <div className="d-flex flex-column flex-md-row">
+                <Button
+                  variant="primary"
+                  className="me-1 mb-1 mb-md-0"
+                  style={{ width: "40px" }} // Set a fixed width
+                  onClick={() => handleShowEditModal(software.id)}
+                >
+                  <MdOutlineEditNote />
+                </Button>
+                <Button
+                  variant="danger"
+                  style={{ width: "40px" }} // Set a fixed width
+                  onClick={() => handleDeleteSoftware(software.id)}
+                >
+                  <MdOutlineDeleteForever />
+                </Button>
+              </div>
+            </Card.Header>
+            {openSoftwareList.includes(softwareIndex) && (
+              <Card.Body>
+                <ListGroup>
+                  {software.versions.map((version, versionIndex) => (
+                    <ListGroup.Item
+                      key={versionIndex}
+                      className="d-flex justify-content-between align-items-center"
+                    >
+                      {version}
+                      <div className="d-flex flex-column flex-md-row">
+                        <Button
+                          variant="primary"
+                          className="me-1 mb-1 mb-md-0"
+                          style={{ width: "40px" }} // Set a fixed width
+                          onClick={() =>
+                            handleShowEditVersionModal(
+                              softwareIndex,
+                              versionIndex
+                            )
+                          }
+                        >
+                          <MdOutlineEditNote />
+                        </Button>
+                        <Button
+                          variant="danger"
+                          style={{ width: "40px" }} // Set a fixed width
+                          onClick={() =>
+                            handleDeleteVersion(softwareIndex, versionIndex)
+                          }
+                        >
+                          <MdOutlineDeleteForever />
+                        </Button>
+                      </div>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+                <Button
+                  variant="success"
+                  className="mt-3"
+                  onClick={() => handleShowAddVersionModal(software)}
+                >
+                  Add Version
+                </Button>
+              </Card.Body>
+            )}
+          </Card>
+        ))}
       {editSoftwareModal}
       {editVersionModal}
       {addVersionModal}
