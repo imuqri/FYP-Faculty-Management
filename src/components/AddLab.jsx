@@ -1,230 +1,325 @@
-// AddLab.js
 import React, { useState, useEffect } from "react";
-import { ref, push, onValue } from "firebase/database";
-import { database } from "../firebase"; // Replace with your actual Firebase configuration
-import { Container, Card, Form, Button, Row, Col } from "react-bootstrap";
+import {
+  getDatabase,
+  ref as databaseRef,
+  push,
+  onValue,
+  get,
+} from "firebase/database";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import {
+  getStorage,
+  ref as storageRef,
+  uploadBytes,
+  getDownloadURL,
+} from "firebase/storage";
+import { Container, Card, Form, Button, ListGroup } from "react-bootstrap";
 
 const AddLab = () => {
   const [labName, setLabName] = useState("");
-  const [location, setLocation] = useState("");
-  const [capacity, setCapacity] = useState("");
-  const [equipmentList, setEquipmentList] = useState([]);
-  const [softwareList, setSoftwareList] = useState([]);
+  const [labLocation, setLabLocation] = useState("");
+  const [labCapacity, setLabCapacity] = useState(0);
+  const [labImage, setLabImage] = useState(null);
+  const [equipments, setEquipments] = useState([]);
+  const [softwares, setSoftwares] = useState([]);
   const [selectedEquipment, setSelectedEquipment] = useState("");
   const [selectedSoftware, setSelectedSoftware] = useState("");
-  const [softwareVersionList, setSoftwareVersionList] = useState([]);
+  const [softwareVersions, setSoftwareVersions] = useState([]);
   const [selectedSoftwareVersion, setSelectedSoftwareVersion] = useState("");
+  const [labEquipments, setLabEquipments] = useState([]);
+  const [labSoftwares, setLabSoftwares] = useState([]);
+  const [selectedSoftwareVersions, setSelectedSoftwareVersions] = useState([]);
+
+  const auth = getAuth();
+  const storage = getStorage();
+  const labs = databaseRef(getDatabase(), "labs");
 
   useEffect(() => {
-    // Fetch equipment data from Firebase
-    const fetchEquipmentData = async () => {
-      try {
-        const equipmentRef = ref(database, "equipments");
-        const snapshot = await onValue(equipmentRef, (data) => {
-          if (data.exists()) {
-            setEquipmentList(Object.keys(data.val()));
-          }
-        });
-      } catch (error) {
-        console.error("Error fetching equipment data:", error);
+    // Fetch equipments from the database
+    const equipmentsRef = databaseRef(getDatabase(), "equipments");
+    onValue(equipmentsRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const equipmentData = snapshot.val();
+        const equipmentList = Object.keys(equipmentData).map((key) => ({
+          id: key,
+          name: equipmentData[key].name,
+        }));
+        setEquipments(equipmentList);
       }
-    };
+    });
 
-    // Fetch software data from Firebase
-    const fetchSoftwareData = async () => {
-      try {
-        const softwareRef = ref(database, "softwares");
-        const snapshot = await onValue(softwareRef, (data) => {
-          if (data.exists()) {
-            setSoftwareList(Object.keys(data.val()));
-          }
+    // Fetch softwares and versions from the database
+    const softwaresRef = databaseRef(getDatabase(), "softwares");
+    onValue(softwaresRef, (snapshot) => {
+      if (snapshot.exists()) {
+        const softwareData = snapshot.val();
+        const softwareList = Object.keys(softwareData).map((key) => {
+          const softwareVersions = Object.keys(
+            softwareData[key].versions || {}
+          ).map((versionKey) => softwareData[key].versions[versionKey]);
+          return {
+            id: key,
+            name: softwareData[key].name,
+            versions: softwareVersions,
+          };
         });
-      } catch (error) {
-        console.error("Error fetching software data:", error);
+        setSoftwares(softwareList);
       }
-    };
-
-    fetchEquipmentData();
-    fetchSoftwareData();
+    });
   }, []);
 
-  useEffect(() => {
-    // Fetch software versions based on selected software
-    const fetchSoftwareVersions = async () => {
-      try {
-        if (selectedSoftware) {
-          const softwareVersionsRef = ref(
-            database,
-            `software/${selectedSoftware}/versions`
-          );
-          const snapshot = await onValue(softwareVersionsRef, (data) => {
-            if (data.exists()) {
-              setSoftwareVersionList(Object.keys(data.val()));
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Error fetching software versions:", error);
-      }
+  const resetForm = () => {
+    setLabName("");
+    setLabLocation("");
+    setLabCapacity(0);
+    setLabImage(null);
+    setSelectedEquipment("");
+    setSelectedSoftware("");
+    setSelectedSoftwareVersion("");
+    setLabEquipments([]);
+    setLabSoftwares([]);
+  };
+
+  const handleAddLab = async () => {
+    if (!labName || !labLocation || labCapacity <= 0 || !labImage) {
+      console.error("Please fill in all the lab details.");
+      return;
+    }
+
+    const labId = Date.now().toString(); // Unique ID for the lab
+
+    // Upload lab image to Firebase Storage
+    const imageRef = storageRef(storage, `labImages/${labId}`);
+    await uploadBytes(imageRef, labImage);
+
+    // Get the download URL of the uploaded image
+    const imageUrl = await getDownloadURL(imageRef);
+
+    // Create a new lab object
+    const newLab = {
+      id: labId,
+      name: labName,
+      location: labLocation,
+      capacity: labCapacity,
+      imageUrl: imageUrl,
+      equipments: labEquipments,
+      softwares: labSoftwares,
     };
 
-    fetchSoftwareVersions();
-  }, [selectedSoftware]);
+    // Push the lab data to the "labs" node in the Firebase Realtime Database
+    push(labs, newLab)
+      .then(() => {
+        console.log("Lab added successfully.");
+        resetForm();
+      })
+      .catch((error) => {
+        console.error("Error adding lab:", error);
+      });
+  };
 
   const handleAddEquipment = () => {
-    if (selectedEquipment && !equipmentList.includes(selectedEquipment)) {
-      setEquipmentList((prevList) => [...prevList, selectedEquipment]);
+    if (selectedEquipment && !labEquipments.includes(selectedEquipment)) {
+      setLabEquipments([...labEquipments, selectedEquipment]);
     }
   };
 
   const handleAddSoftware = () => {
-    if (selectedSoftware && !softwareList.includes(selectedSoftware)) {
-      setSoftwareList((prevList) => [...prevList, selectedSoftware]);
+    if (
+      selectedSoftware &&
+      selectedSoftwareVersion &&
+      !labSoftwares.some(
+        (software) =>
+          software.name === selectedSoftware &&
+          software.version === selectedSoftwareVersion
+      )
+    ) {
+      setLabSoftwares([
+        ...labSoftwares,
+        { name: selectedSoftware, version: selectedSoftwareVersion },
+      ]);
     }
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSoftwareChange = (softwareName) => {
+    setSelectedSoftware(softwareName);
 
-    // Handle form submission logic here
-    console.log("Lab Name:", labName);
-    console.log("Location:", location);
-    console.log("Capacity:", capacity);
-    console.log("Equipment List:", equipmentList);
-    console.log("Software List:", softwareList);
-    console.log("Selected Software Version:", selectedSoftwareVersion);
+    // Retrieve versions from the state
+    const selectedSoftware = softwares.find(
+      (software) => software.name === softwareName
+    );
+    if (selectedSoftware) {
+      console.log("Selected Software Data:", selectedSoftware);
+      setSoftwareVersions(selectedSoftware.versions);
+      setSelectedSoftwareVersion(""); // Reset selected version
+    }
+  };
 
-    // Reset form fields after submission
-    setLabName("");
-    setLocation("");
-    setCapacity("");
-    setEquipmentList([]);
-    setSoftwareList([]);
-    setSoftwareVersionList([]);
+  const handleRemoveEquipment = (equipment) => {
+    const updatedEquipments = labEquipments.filter((e) => e !== equipment);
+    setLabEquipments(updatedEquipments);
+  };
+
+  const handleRemoveSoftware = (software) => {
+    const updatedSoftwares = labSoftwares.filter(
+      (s) => s.name !== software.name || s.version !== software.version
+    );
+    setLabSoftwares(updatedSoftwares);
   };
 
   return (
-    <Container className="mt-5">
+    <Container className="mt-3 mb-3">
       <Card>
-        <Card.Body>
+        <Card.Body className="d-flex flex-column">
           <Card.Title as="h2">Add Lab</Card.Title>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3" controlId="labName">
-              <Form.Label>Lab Name</Form.Label>
-              <Form.Control
-                type="text"
-                value={labName}
-                onChange={(e) => setLabName(e.target.value)}
-              />
-            </Form.Group>
 
-            <Form.Group className="mb-3" controlId="location">
-              <Form.Label>Location</Form.Label>
-              <Form.Control
-                type="text"
-                value={location}
-                onChange={(e) => setLocation(e.target.value)}
-              />
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Lab Name:</Form.Label>
+            <Form.Control
+              type="text"
+              value={labName}
+              onChange={(e) => setLabName(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group className="mb-3" controlId="capacity">
-              <Form.Label>Capacity</Form.Label>
-              <Form.Control
-                type="text"
-                value={capacity}
-                onChange={(e) => setCapacity(e.target.value)}
-              />
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Lab Location:</Form.Label>
+            <Form.Control
+              type="text"
+              value={labLocation}
+              onChange={(e) => setLabLocation(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group controlId="equipment">
-              <Form.Label>Equipment</Form.Label>
-              <Row>
-                <Col xs={8}>
-                  <Form.Control
-                    as="select"
-                    value={selectedEquipment}
-                    onChange={(e) => setSelectedEquipment(e.target.value)}
-                  >
-                    {equipmentList.map((equipment) => (
-                      <option key={equipment} value={equipment}>
-                        {equipment}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Col>
-                <Col xs={4} className="d-flex align-items-end">
-                  <Button variant="primary" onClick={handleAddEquipment}>
-                    Add
-                  </Button>
-                </Col>
-              </Row>
-              {/* Display selected equipment list */}
-              {equipmentList.length > 0 && (
-                <div className="mt-2">
-                  <strong>Selected Equipment:</strong>
-                  <ul>
-                    {equipmentList.map((equipment) => (
-                      <li key={equipment}>{equipment}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Lab Capacity:</Form.Label>
+            <Form.Control
+              type="number"
+              value={labCapacity}
+              onChange={(e) => setLabCapacity(e.target.value)}
+            />
+          </Form.Group>
 
-            <Form.Group controlId="software">
-              <Form.Label>Software</Form.Label>
-              <Row>
-                <Col xs={8}>
-                  <Form.Control
-                    as="select"
-                    value={selectedSoftware}
-                    onChange={(e) => setSelectedSoftware(e.target.value)}
-                  >
-                    {softwareList.map((software) => (
-                      <option key={software} value={software}>
-                        {software}
-                      </option>
-                    ))}
-                  </Form.Control>
-                </Col>
-                <Col xs={4} className="d-flex align-items-end">
-                  <Button variant="primary" onClick={handleAddSoftware}>
-                    Add
-                  </Button>
-                </Col>
-              </Row>
-              {/* Display selected software list */}
-              {softwareList.length > 0 && (
-                <div className="mt-2">
-                  <strong>Selected Software:</strong>
-                  <ul>
-                    {softwareList.map((software) => (
-                      <li key={software}>{software}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Lab Image:</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={(e) => setLabImage(e.target.files[0])}
+            />
+          </Form.Group>
 
-            <Form.Group controlId="softwareVersion">
-              <Form.Label>Software Version</Form.Label>
+          <Form.Group className="mb-3">
+            <Form.Label>Select Equipment:</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedEquipment}
+              onChange={(e) => setSelectedEquipment(e.target.value)}
+            >
+              <option value="">Select Equipment</option>
+              {equipments.map((equipment) => (
+                <option key={equipment.id} value={equipment.name}>
+                  {equipment.name}
+                </option>
+              ))}
+            </Form.Control>
+            <Button
+              variant="primary"
+              onClick={handleAddEquipment}
+              className="mt-2"
+            >
+              Add Equipment
+            </Button>
+          </Form.Group>
+
+          <ListGroup className="mb-3">
+            <ListGroup.Item variant="info">Selected Equipments</ListGroup.Item>
+            {labEquipments.map((equipment) => (
+              <ListGroup.Item
+                key={equipment}
+                className="d-flex justify-content-between"
+              >
+                {equipment}
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleRemoveEquipment(equipment)}
+                >
+                  Remove
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Select Software:</Form.Label>
+            <Form.Control
+              as="select"
+              value={selectedSoftware}
+              onChange={(e) => handleSoftwareChange(e.target.value)}
+            >
+              <option value="">Select Software</option>
+              {softwares.map((software) => (
+                <option key={software.id} value={software.name}>
+                  {software.name}
+                </option>
+              ))}
+            </Form.Control>
+          </Form.Group>
+
+          {selectedSoftware && (
+            <Form.Group className="mb-3">
+              <Form.Label>Select Software Version:</Form.Label>
               <Form.Control
                 as="select"
                 value={selectedSoftwareVersion}
                 onChange={(e) => setSelectedSoftwareVersion(e.target.value)}
               >
-                {softwareVersionList.map((version) => (
+                <option value="">Select Version</option>
+                {softwareVersions.map((version) => (
                   <option key={version} value={version}>
                     {version}
                   </option>
                 ))}
               </Form.Control>
-            </Form.Group>
 
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
+              <Button
+                variant="primary"
+                onClick={handleAddSoftware}
+                className="mt-2"
+              >
+                Add Software
+              </Button>
+            </Form.Group>
+          )}
+
+          <ListGroup className="mb-3">
+            <ListGroup.Item variant="success">
+              Selected Softwares
+            </ListGroup.Item>
+            {labSoftwares.map((software) => (
+              <ListGroup.Item
+                key={`${software.name}-${software.version}`}
+                className="d-flex justify-content-between"
+              >
+                {`${software.name} - ${software.version}`}
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleRemoveSoftware(software)}
+                >
+                  Remove
+                </Button>
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+
+          <Button
+            variant="primary"
+            onClick={handleAddLab}
+            className="align-self-end"
+          >
+            Add Lab
+          </Button>
         </Card.Body>
       </Card>
     </Container>
