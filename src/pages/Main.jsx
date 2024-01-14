@@ -7,6 +7,8 @@ import SoftwareList from "../components/SoftwareList";
 import EquipmentList from "../components/EquipmentList";
 import UserList from "../components/UserList";
 import AddLab from "../components/AddLab";
+import AddClass from "../components/AddClass";
+import DisplayFacility from "../components/DisplayFacility";
 
 const Main = () => {
   return (
@@ -36,6 +38,12 @@ const Main = () => {
       </div>
       <div>
         <AddLab />
+      </div>
+      <div>
+        <AddClass />
+      </div>
+      <div>
+        <DisplayFacility />
       </div>
       <div></div>
       <div></div>
