@@ -4,6 +4,7 @@ import {
   ref as databaseRef,
   onValue,
   get,
+  remove,
 } from "firebase/database";
 import {
   Container,
@@ -14,21 +15,22 @@ import {
   Modal,
   Button,
 } from "react-bootstrap";
+import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
 
-const DisplayFacility = () => {
-  const [facilities, setFacilities] = useState([]);
+const ManageClass = () => {
+  const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedClass, setSelectedClass] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   const uniqueEquipments = Array.from(
-    new Set(facilities.flatMap((facility) => facility.equipments || []))
+    new Set(classes.flatMap((classItem) => classItem.equipments || []))
   );
 
   const uniqueSoftwares = Array.from(
     new Set(
-      facilities.flatMap((facility) =>
-        (facility.softwares || []).map((software) => software.name)
+      classes.flatMap((classItem) =>
+        (classItem.softwares || []).map((software) => software.name)
       )
     )
   );
@@ -42,67 +44,81 @@ const DisplayFacility = () => {
     const fetchData = async () => {
       try {
         const db = getDatabase();
-        const labsRef = databaseRef(db, "labs");
         const classesRef = databaseRef(db, "classes");
 
-        const labsSnapshot = await get(labsRef);
         const classesSnapshot = await get(classesRef);
 
-        let facilitiesArray = [];
-
-        if (labsSnapshot.exists()) {
-          const labsData = labsSnapshot.val();
-          facilitiesArray = [...facilitiesArray, ...Object.values(labsData)];
-        }
+        let classesArray = [];
 
         if (classesSnapshot.exists()) {
           const classesData = classesSnapshot.val();
-          facilitiesArray = [...facilitiesArray, ...Object.values(classesData)];
+          classesArray = [...classesArray, ...Object.values(classesData)];
         }
 
-        setFacilities(facilitiesArray);
+        setClasses(classesArray);
       } catch (error) {
-        console.error("Error fetching facilities:", error);
+        console.error("Error fetching classes:", error);
       }
     };
 
     fetchData();
   }, []);
-  console.log("facilities", facilities);
-  const handleCardClick = (facility) => {
-    setSelectedFacility(facility);
-    setShowModal(true);
+
+  const handleCardClick = (classItem) => {
+    if (!showModal) {
+      setSelectedClass(classItem);
+      setShowModal(true);
+    }
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedFacility(null);
+    setSelectedClass(null);
   };
 
-  const applyFilters = (facility) => {
+  const applyFilters = (classItem) => {
     // Capacity filter
     const isCapacityMatch =
-      (capacityFilter === "lt30" && facility.capacity < 30) ||
+      (capacityFilter === "lt30" && classItem.capacity < 30) ||
       (capacityFilter === "31-40" &&
-        facility.capacity >= 31 &&
-        facility.capacity <= 40) ||
-      (capacityFilter === "gt40" && facility.capacity > 40) ||
+        classItem.capacity >= 31 &&
+        classItem.capacity <= 40) ||
+      (capacityFilter === "gt40" && classItem.capacity > 40) ||
       capacityFilter === "all";
 
     // Equipment filter
     const isEquipmentMatch =
       equipmentFilter === "all" ||
-      (facility.equipments && facility.equipments.includes(equipmentFilter));
+      (classItem.equipments && classItem.equipments.includes(equipmentFilter));
 
     // Software filter
     const isSoftwareMatch =
       softwareFilter === "all" ||
-      (facility.softwares &&
-        facility.softwares.some(
+      (classItem.softwares &&
+        classItem.softwares.some(
           (software) => software.name === softwareFilter
         ));
 
     return isCapacityMatch && isEquipmentMatch && isSoftwareMatch;
+  };
+
+  const handleDelete = async () => {
+    try {
+      // Delete data from the Realtime Database
+      const db = getDatabase();
+      const classRef = databaseRef(db, "classes", selectedClass.id);
+      await remove(classRef);
+
+      // Delete image from storage
+      const storage = getStorage();
+      const imageRef = storageRef(storage, selectedClass.imagePath);
+      await deleteObject(imageRef);
+
+      // After successful deletion, close the modal
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error deleting class:", error);
+    }
   };
 
   const capacityOptions = [
@@ -173,24 +189,29 @@ const DisplayFacility = () => {
       </Form>
 
       <Row xs={1} md={2} lg={4} xl={4} className="g-4">
-        {facilities
+        {classes
           .filter(
-            (facility) =>
-              facility.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-              applyFilters(facility)
+            (classItem) =>
+              classItem.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              applyFilters(classItem)
           )
-          .map((facility) => (
-            <Col key={facility.id}>
-              <Card onClick={() => handleCardClick(facility)}>
+          .map((classItem) => (
+            <Col key={classItem.id}>
+              <Card onClick={() => handleCardClick(classItem)}>
                 <Card.Img
                   variant="top"
-                  src={facility.imageUrl}
+                  src={classItem.imageUrl}
                   style={{ width: "100%", height: "200px", objectFit: "cover" }}
                 />
                 <Card.Body>
-                  <Card.Title>{facility.name}</Card.Title>
-                  <Card.Text>{facility.location}</Card.Text>
+                  <Card.Title>{classItem.name}</Card.Title>
+                  <Card.Text>{classItem.location}</Card.Text>
                 </Card.Body>
+                <Card.Footer>
+                  <Button variant="danger" onClick={handleDelete}>
+                    Delete
+                  </Button>
+                </Card.Footer>
               </Card>
             </Col>
           ))}
@@ -199,14 +220,14 @@ const DisplayFacility = () => {
       {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
         <Modal.Header closeButton>
-          <Modal.Title>Facility - {selectedFacility?.name}</Modal.Title>
+          <Modal.Title>Class - {selectedClass?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             <Col md={6}>
               <img
-                src={selectedFacility?.imageUrl}
-                alt={selectedFacility?.name}
+                src={selectedClass?.imageUrl}
+                alt={selectedClass?.name}
                 style={{
                   width: "100%",
                   height: "350px",
@@ -218,33 +239,33 @@ const DisplayFacility = () => {
             </Col>
             <Col md={6}>
               <p>
-                <strong>Name:</strong> {selectedFacility?.name}
+                <strong>Name:</strong> {selectedClass?.name}
               </p>
               <p>
-                <strong>Location:</strong> {selectedFacility?.location}
+                <strong>Location:</strong> {selectedClass?.location}
               </p>
               <p>
-                <strong>Capacity:</strong> {selectedFacility?.capacity}
+                <strong>Capacity:</strong> {selectedClass?.capacity}
               </p>
 
-              {selectedFacility?.equipments &&
-                selectedFacility.equipments.length > 0 && (
+              {selectedClass?.equipments &&
+                selectedClass.equipments.length > 0 && (
                   <div>
                     <strong>Equipments:</strong>
                     <ul>
-                      {selectedFacility.equipments.map((equipment, index) => (
+                      {selectedClass.equipments.map((equipment, index) => (
                         <li key={index}>{equipment}</li>
                       ))}
                     </ul>
                   </div>
                 )}
 
-              {selectedFacility?.softwares &&
-                selectedFacility.softwares.length > 0 && (
+              {selectedClass?.softwares &&
+                selectedClass.softwares.length > 0 && (
                   <div>
                     <strong>Softwares:</strong>
                     <ul>
-                      {selectedFacility.softwares.map((software, index) => (
+                      {selectedClass.softwares.map((software, index) => (
                         <li
                           key={index}
                         >{`${software.name} - ${software.version}`}</li>
@@ -265,4 +286,4 @@ const DisplayFacility = () => {
   );
 };
 
-export default DisplayFacility;
+export default ManageClass;

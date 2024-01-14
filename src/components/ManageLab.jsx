@@ -15,20 +15,20 @@ import {
   Button,
 } from "react-bootstrap";
 
-const DisplayFacility = () => {
-  const [facilities, setFacilities] = useState([]);
+const ManageLab = () => {
+  const [labs, setLabs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedFacility, setSelectedFacility] = useState(null);
+  const [selectedLab, setSelectedLab] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
   const uniqueEquipments = Array.from(
-    new Set(facilities.flatMap((facility) => facility.equipments || []))
+    new Set(labs.flatMap((lab) => lab.equipments || []))
   );
 
   const uniqueSoftwares = Array.from(
     new Set(
-      facilities.flatMap((facility) =>
-        (facility.softwares || []).map((software) => software.name)
+      labs.flatMap((lab) =>
+        (lab.softwares || []).map((software) => software.name)
       )
     )
   );
@@ -43,64 +43,55 @@ const DisplayFacility = () => {
       try {
         const db = getDatabase();
         const labsRef = databaseRef(db, "labs");
-        const classesRef = databaseRef(db, "classes");
 
         const labsSnapshot = await get(labsRef);
-        const classesSnapshot = await get(classesRef);
 
-        let facilitiesArray = [];
+        let labsArray = [];
 
         if (labsSnapshot.exists()) {
           const labsData = labsSnapshot.val();
-          facilitiesArray = [...facilitiesArray, ...Object.values(labsData)];
+          labsArray = [...labsArray, ...Object.values(labsData)];
         }
 
-        if (classesSnapshot.exists()) {
-          const classesData = classesSnapshot.val();
-          facilitiesArray = [...facilitiesArray, ...Object.values(classesData)];
-        }
-
-        setFacilities(facilitiesArray);
+        setLabs(labsArray);
       } catch (error) {
-        console.error("Error fetching facilities:", error);
+        console.error("Error fetching labs:", error);
       }
     };
 
     fetchData();
   }, []);
-  console.log("facilities", facilities);
-  const handleCardClick = (facility) => {
-    setSelectedFacility(facility);
+
+  const handleCardClick = (lab) => {
+    setSelectedLab(lab);
     setShowModal(true);
   };
 
   const handleCloseModal = () => {
     setShowModal(false);
-    setSelectedFacility(null);
+    setSelectedLab(null);
   };
 
-  const applyFilters = (facility) => {
+  const applyFilters = (lab) => {
     // Capacity filter
     const isCapacityMatch =
-      (capacityFilter === "lt30" && facility.capacity < 30) ||
+      (capacityFilter === "lt30" && lab.capacity < 30) ||
       (capacityFilter === "31-40" &&
-        facility.capacity >= 31 &&
-        facility.capacity <= 40) ||
-      (capacityFilter === "gt40" && facility.capacity > 40) ||
+        lab.capacity >= 31 &&
+        lab.capacity <= 40) ||
+      (capacityFilter === "gt40" && lab.capacity > 40) ||
       capacityFilter === "all";
 
     // Equipment filter
     const isEquipmentMatch =
       equipmentFilter === "all" ||
-      (facility.equipments && facility.equipments.includes(equipmentFilter));
+      (lab.equipments && lab.equipments.includes(equipmentFilter));
 
     // Software filter
     const isSoftwareMatch =
       softwareFilter === "all" ||
-      (facility.softwares &&
-        facility.softwares.some(
-          (software) => software.name === softwareFilter
-        ));
+      (lab.softwares &&
+        lab.softwares.some((software) => software.name === softwareFilter));
 
     return isCapacityMatch && isEquipmentMatch && isSoftwareMatch;
   };
@@ -173,23 +164,23 @@ const DisplayFacility = () => {
       </Form>
 
       <Row xs={1} md={2} lg={4} xl={4} className="g-4">
-        {facilities
+        {labs
           .filter(
-            (facility) =>
-              facility.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
-              applyFilters(facility)
+            (lab) =>
+              lab.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
+              applyFilters(lab)
           )
-          .map((facility) => (
-            <Col key={facility.id}>
-              <Card onClick={() => handleCardClick(facility)}>
+          .map((lab) => (
+            <Col key={lab.id}>
+              <Card onClick={() => handleCardClick(lab)}>
                 <Card.Img
                   variant="top"
-                  src={facility.imageUrl}
+                  src={lab.imageUrl}
                   style={{ width: "100%", height: "200px", objectFit: "cover" }}
                 />
                 <Card.Body>
-                  <Card.Title>{facility.name}</Card.Title>
-                  <Card.Text>{facility.location}</Card.Text>
+                  <Card.Title>{lab.name}</Card.Title>
+                  <Card.Text>{lab.location}</Card.Text>
                 </Card.Body>
               </Card>
             </Col>
@@ -199,14 +190,14 @@ const DisplayFacility = () => {
       {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
         <Modal.Header closeButton>
-          <Modal.Title>Facility - {selectedFacility?.name}</Modal.Title>
+          <Modal.Title>Lab - {selectedLab?.name}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Row>
             <Col md={6}>
               <img
-                src={selectedFacility?.imageUrl}
-                alt={selectedFacility?.name}
+                src={selectedLab?.imageUrl}
+                alt={selectedLab?.name}
                 style={{
                   width: "100%",
                   height: "350px",
@@ -218,40 +209,38 @@ const DisplayFacility = () => {
             </Col>
             <Col md={6}>
               <p>
-                <strong>Name:</strong> {selectedFacility?.name}
+                <strong>Name:</strong> {selectedLab?.name}
               </p>
               <p>
-                <strong>Location:</strong> {selectedFacility?.location}
+                <strong>Location:</strong> {selectedLab?.location}
               </p>
               <p>
-                <strong>Capacity:</strong> {selectedFacility?.capacity}
+                <strong>Capacity:</strong> {selectedLab?.capacity}
               </p>
 
-              {selectedFacility?.equipments &&
-                selectedFacility.equipments.length > 0 && (
-                  <div>
-                    <strong>Equipments:</strong>
-                    <ul>
-                      {selectedFacility.equipments.map((equipment, index) => (
-                        <li key={index}>{equipment}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+              {selectedLab?.equipments && selectedLab.equipments.length > 0 && (
+                <div>
+                  <strong>Equipments:</strong>
+                  <ul>
+                    {selectedLab.equipments.map((equipment, index) => (
+                      <li key={index}>{equipment}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
-              {selectedFacility?.softwares &&
-                selectedFacility.softwares.length > 0 && (
-                  <div>
-                    <strong>Softwares:</strong>
-                    <ul>
-                      {selectedFacility.softwares.map((software, index) => (
-                        <li
-                          key={index}
-                        >{`${software.name} - ${software.version}`}</li>
-                      ))}
-                    </ul>
-                  </div>
-                )}
+              {selectedLab?.softwares && selectedLab.softwares.length > 0 && (
+                <div>
+                  <strong>Softwares:</strong>
+                  <ul>
+                    {selectedLab.softwares.map((software, index) => (
+                      <li
+                        key={index}
+                      >{`${software.name} - ${software.version}`}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </Col>
           </Row>
         </Modal.Body>
@@ -265,4 +254,4 @@ const DisplayFacility = () => {
   );
 };
 
-export default DisplayFacility;
+export default ManageLab;

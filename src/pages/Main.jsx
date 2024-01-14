@@ -9,6 +9,8 @@ import UserList from "../components/UserList";
 import AddLab from "../components/AddLab";
 import AddClass from "../components/AddClass";
 import DisplayFacility from "../components/DisplayFacility";
+import ManageLab from "../components/ManageLab";
+import ManageClass from "../components/ManageClass";
 
 const Main = () => {
   return (
@@ -44,6 +46,12 @@ const Main = () => {
       </div>
       <div>
         <DisplayFacility />
+      </div>
+      <div>
+        <ManageLab />
+      </div>
+      <div>
+        <ManageClass />
       </div>
       <div></div>
       <div></div>
