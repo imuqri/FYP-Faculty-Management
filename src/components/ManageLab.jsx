@@ -4,7 +4,9 @@ import {
   ref as databaseRef,
   onValue,
   get,
+  remove,
 } from "firebase/database";
+import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
 import {
   Container,
   Card,
@@ -53,6 +55,24 @@ const ManageLab = () => {
   const handleCloseModal = () => {
     setShowModal(false);
     setSelectedLab(null);
+  };
+
+  const handleDeleteLab = async () => {
+    try {
+      const db = getDatabase();
+      const labsRef = databaseRef(db, `labs/${selectedLab.key}`);
+      await remove(labsRef);
+
+      const storage = getStorage();
+      const imageRef = storageRef(storage, selectedLab.imageUrl);
+      await deleteObject(imageRef);
+
+      const updatedLabs = labs.filter((lab) => lab.id !== selectedLab.id);
+      setLabs(updatedLabs);
+      handleCloseModal();
+    } catch (error) {
+      console.error("Error deleting lab:", error);
+    }
   };
 
   return (
@@ -146,6 +166,9 @@ const ManageLab = () => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
+          <Button variant="danger" onClick={handleDeleteLab}>
+            Delete
+          </Button>
           <Button variant="secondary" onClick={handleCloseModal}>
             Close
           </Button>

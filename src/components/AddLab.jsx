@@ -5,6 +5,7 @@ import {
   push,
   onValue,
   get,
+  update,
 } from "firebase/database";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import {
@@ -107,7 +108,14 @@ const AddLab = () => {
     };
 
     // Push the lab data to the "labs" node in the Firebase Realtime Database
-    push(labs, newLab)
+    const newLabRef = push(labs, newLab);
+
+    // Firebase generates a unique key for each pushed object
+    // You can get this key using the key property of the reference
+    const key = newLabRef.key;
+
+    // Store the key in the lab object
+    update(newLabRef, { key: key })
       .then(() => {
         console.log("Lab added successfully.");
         resetForm();
