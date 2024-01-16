@@ -4,10 +4,9 @@ import {
   ref as databaseRef,
   push,
   onValue,
-  get,
   update,
 } from "firebase/database";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 import {
   getStorage,
   ref as storageRef,
@@ -29,9 +28,7 @@ const AddLab = () => {
   const [selectedSoftwareVersion, setSelectedSoftwareVersion] = useState("");
   const [labEquipments, setLabEquipments] = useState([]);
   const [labSoftwares, setLabSoftwares] = useState([]);
-  const [selectedSoftwareVersions, setSelectedSoftwareVersions] = useState([]);
 
-  const auth = getAuth();
   const storage = getStorage();
   const labs = databaseRef(getDatabase(), "labs");
 

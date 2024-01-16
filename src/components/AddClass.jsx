@@ -4,8 +4,8 @@ import {
   ref as databaseRef,
   push,
   onValue,
+  update,
 } from "firebase/database";
-import { getAuth } from "firebase/auth";
 import {
   getStorage,
   ref as storageRef,
@@ -24,7 +24,6 @@ const AddClass = () => {
   const [selectedEquipment, setSelectedEquipment] = useState("");
   const [classEquipments, setClassEquipments] = useState([]);
 
-  const auth = getAuth();
   const classes = databaseRef(getDatabase(), "classes");
 
   useEffect(() => {
@@ -75,14 +74,17 @@ const AddClass = () => {
       equipments: classEquipments,
     };
 
+    const newClassRef = push(classes, newClass);
+    const key = newClassRef.key;
+
     // Push the class data to the "classes" node in the Firebase Realtime Database
-    push(classes, newClass)
+    update(newClassRef, { key: key })
       .then(() => {
         console.log("Class added successfully.");
         resetForm();
       })
       .catch((error) => {
-        console.error("Error adding class:", error);
+        console.error("Error adding lab:", error);
       });
   };
 
@@ -147,11 +149,13 @@ const AddClass = () => {
               onChange={(e) => setSelectedEquipment(e.target.value)}
             >
               <option value="">Select Equipment</option>
-              {equipments.map((equipment) => (
-                <option key={equipment.id} value={equipment.name}>
-                  {equipment.name}
-                </option>
-              ))}
+              {equipments
+                .sort((a, b) => a.name.localeCompare(b.name))
+                .map((equipment) => (
+                  <option key={equipment.id} value={equipment.name}>
+                    {equipment.name}
+                  </option>
+                ))}
             </Form.Control>
             <Button
               variant="primary"
@@ -164,21 +168,23 @@ const AddClass = () => {
 
           <ListGroup className="mb-3">
             <ListGroup.Item variant="info">Selected Equipments</ListGroup.Item>
-            {classEquipments.map((equipment) => (
-              <ListGroup.Item
-                key={equipment}
-                className="d-flex justify-content-between"
-              >
-                {equipment}
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleRemoveEquipment(equipment)}
+            {classEquipments
+              .sort((a, b) => a.localeCompare(b))
+              .map((equipment) => (
+                <ListGroup.Item
+                  key={equipment}
+                  className="d-flex justify-content-between"
                 >
-                  Remove
-                </Button>
-              </ListGroup.Item>
-            ))}
+                  {equipment}
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => handleRemoveEquipment(equipment)}
+                  >
+                    Remove
+                  </Button>
+                </ListGroup.Item>
+              ))}
           </ListGroup>
 
           <Button

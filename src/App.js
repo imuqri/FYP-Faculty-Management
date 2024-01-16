@@ -17,7 +17,7 @@ const { Sider, Content } = Layout;
 function App() {
   const { user } = UserAuth(); // check auth user
 
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
   const {
     token: { colorBgContainer, borderRadiusLG },
   } = theme.useToken();

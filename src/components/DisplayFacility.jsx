@@ -1,10 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  getDatabase,
-  ref as databaseRef,
-  onValue,
-  get,
-} from "firebase/database";
+import { getDatabase, ref as databaseRef, get } from "firebase/database";
 import {
   Container,
   Card,
@@ -147,11 +142,13 @@ const DisplayFacility = () => {
               value={equipmentFilter}
             >
               <option value="all">All Equipments</option>
-              {uniqueEquipments.map((equipment, index) => (
-                <option key={index} value={equipment}>
-                  {equipment}
-                </option>
-              ))}
+              {uniqueEquipments
+                .sort((a, b) => a.localeCompare(b))
+                .map((equipment, index) => (
+                  <option key={index} value={equipment}>
+                    {equipment}
+                  </option>
+                ))}
             </Form.Select>
           </Col>
 
@@ -162,11 +159,13 @@ const DisplayFacility = () => {
               value={softwareFilter}
             >
               <option value="all">All Softwares</option>
-              {uniqueSoftwares.map((software, index) => (
-                <option key={index} value={software}>
-                  {software}
-                </option>
-              ))}
+              {uniqueSoftwares
+                .sort((a, b) => a.localeCompare(b))
+                .map((software, index) => (
+                  <option key={index} value={software}>
+                    {software}
+                  </option>
+                ))}
             </Form.Select>
           </Col>
         </Row>
@@ -179,6 +178,7 @@ const DisplayFacility = () => {
               facility.name.toLowerCase().includes(searchTerm.toLowerCase()) &&
               applyFilters(facility)
           )
+          .sort((a, b) => a.name.localeCompare(b.name))
           .map((facility) => (
             <Col key={facility.id}>
               <Card onClick={() => handleCardClick(facility)}>
@@ -232,9 +232,11 @@ const DisplayFacility = () => {
                   <div>
                     <strong>Equipments:</strong>
                     <ul>
-                      {selectedFacility.equipments.map((equipment, index) => (
-                        <li key={index}>{equipment}</li>
-                      ))}
+                      {selectedFacility.equipments
+                        .sort((a, b) => a.localeCompare(b))
+                        .map((equipment, index) => (
+                          <li key={index}>{equipment}</li>
+                        ))}
                     </ul>
                   </div>
                 )}
@@ -244,11 +246,13 @@ const DisplayFacility = () => {
                   <div>
                     <strong>Softwares:</strong>
                     <ul>
-                      {selectedFacility.softwares.map((software, index) => (
-                        <li
-                          key={index}
-                        >{`${software.name} - ${software.version}`}</li>
-                      ))}
+                      {selectedFacility.softwares
+                        .sort((a, b) => a.name.localeCompare(b.name))
+                        .map((software, index) => (
+                          <li
+                            key={index}
+                          >{`${software.name} - ${software.version}`}</li>
+                        ))}
                     </ul>
                   </div>
                 )}

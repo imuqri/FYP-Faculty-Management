@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   getDatabase,
   ref as databaseRef,
-  onValue,
   get,
   remove,
 } from "firebase/database";
@@ -91,6 +90,7 @@ const ManageLab = () => {
           .filter((lab) =>
             lab.name.toLowerCase().includes(searchTerm.toLowerCase())
           )
+          .sort((a, b) => a.name.localeCompare(b.name)) // Sort labs alphabetically by name
           .map((lab) => (
             <Col key={lab.id}>
               <Card onClick={() => handleCardClick(lab)}>
@@ -143,9 +143,11 @@ const ManageLab = () => {
                 <div>
                   <strong>Equipments:</strong>
                   <ul>
-                    {selectedLab.equipments.map((equipment, index) => (
-                      <li key={index}>{equipment}</li>
-                    ))}
+                    {selectedLab.equipments
+                      .sort((a, b) => a.localeCompare(b)) // Sort equipments alphabetically
+                      .map((equipment, index) => (
+                        <li key={index}>{equipment}</li>
+                      ))}
                   </ul>
                 </div>
               )}
@@ -154,11 +156,13 @@ const ManageLab = () => {
                 <div>
                   <strong>Softwares:</strong>
                   <ul>
-                    {selectedLab.softwares.map((software, index) => (
-                      <li
-                        key={index}
-                      >{`${software.name} - ${software.version}`}</li>
-                    ))}
+                    {selectedLab.softwares
+                      .sort((a, b) => a.name.localeCompare(b.name)) // Sort softwares alphabetically by name
+                      .map((software, index) => (
+                        <li
+                          key={index}
+                        >{`${software.name} - ${software.version}`}</li>
+                      ))}
                   </ul>
                 </div>
               )}
