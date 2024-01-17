@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   getDatabase,
   ref as databaseRef,
-  get,
+  onValue,
   remove,
 } from "firebase/database";
 import {
@@ -28,16 +28,17 @@ const ManageClass = () => {
         const db = getDatabase();
         const classesRef = databaseRef(db, "classes");
 
-        const classesSnapshot = await get(classesRef);
+        // Use onValue to listen for changes
+        onValue(classesRef, (snapshot) => {
+          const classesData = snapshot.val();
+          let classesArray = [];
 
-        let classesArray = [];
+          if (classesData) {
+            classesArray = [...classesArray, ...Object.values(classesData)];
+          }
 
-        if (classesSnapshot.exists()) {
-          const classesData = classesSnapshot.val();
-          classesArray = [...classesArray, ...Object.values(classesData)];
-        }
-
-        setClasses(classesArray);
+          setClasses(classesArray);
+        });
       } catch (error) {
         console.error("Error fetching classes:", error);
       }

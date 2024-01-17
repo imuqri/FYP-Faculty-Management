@@ -175,13 +175,13 @@ const AddReport = () => {
             <option value="" disabled>
               Select Facility Name
             </option>
-            {(facilityType === "lab" ? labs : classes).map(
-              (facility, index) => (
+            {(facilityType === "lab" ? labs : classes)
+              .sort((a, b) => a.name.localeCompare(b.name))
+              .map((facility, index) => (
                 <option key={index} value={facility.name}>
                   {facility.name}
                 </option>
-              )
-            )}
+              ))}
           </Form.Select>
         </Form.Group>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { getDatabase, ref as databaseRef, get } from "firebase/database";
+import { getDatabase, ref as databaseRef, onValue } from "firebase/database";
 import {
   Container,
   Card,
@@ -40,30 +40,42 @@ const DisplayFacility = () => {
         const labsRef = databaseRef(db, "labs");
         const classesRef = databaseRef(db, "classes");
 
-        const labsSnapshot = await get(labsRef);
-        const classesSnapshot = await get(classesRef);
+        // Use onValue to listen for changes
+        onValue(labsRef, (snapshot) => {
+          const labsData = snapshot.val();
+          let facilitiesArray = [];
 
-        let facilitiesArray = [];
+          if (labsData) {
+            facilitiesArray = [...facilitiesArray, ...Object.values(labsData)];
+          }
 
-        if (labsSnapshot.exists()) {
-          const labsData = labsSnapshot.val();
-          facilitiesArray = [...facilitiesArray, ...Object.values(labsData)];
-        }
+          setFacilities(facilitiesArray);
+        });
 
-        if (classesSnapshot.exists()) {
-          const classesData = classesSnapshot.val();
-          facilitiesArray = [...facilitiesArray, ...Object.values(classesData)];
-        }
+        // Use onValue to listen for changes
+        onValue(classesRef, (snapshot) => {
+          const classesData = snapshot.val();
+          let facilitiesArray = [...facilities];
 
-        setFacilities(facilitiesArray);
+          if (classesData) {
+            facilitiesArray = [
+              ...facilitiesArray,
+              ...Object.values(classesData),
+            ];
+          }
+
+          setFacilities(facilitiesArray);
+        });
       } catch (error) {
         console.error("Error fetching facilities:", error);
       }
     };
 
     fetchData();
-  }, []);
+  }, []); // Dependency array to ensure the effect runs only once
+
   console.log("facilities", facilities);
+
   const handleCardClick = (facility) => {
     setSelectedFacility(facility);
     setShowModal(true);

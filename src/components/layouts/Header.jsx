@@ -45,7 +45,7 @@ const Header = ({ collapsed, setCollapsed }) => {
         padding: "0 16px",
         position: "fixed",
         width: "100%",
-        zIndex: "2",
+        zIndex: "100",
       }}
     >
       <Button
@@ -61,10 +61,10 @@ const Header = ({ collapsed, setCollapsed }) => {
       />
 
       <Dropdown
-        menu={accountMenu}
+        overlay={accountMenu}
         placement="bottomRight"
-        open={dropdownVisible}
-        onOpenChange={(visible) => setDropdownVisible(visible)}
+        visible={dropdownVisible}
+        onVisibleChange={(visible) => setDropdownVisible(visible)}
       >
         <Button
           type="text"

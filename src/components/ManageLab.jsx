@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import {
   getDatabase,
   ref as databaseRef,
-  get,
+  onValue,
   remove,
 } from "firebase/database";
 import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
@@ -28,16 +28,17 @@ const ManageLab = () => {
         const db = getDatabase();
         const labsRef = databaseRef(db, "labs");
 
-        const labsSnapshot = await get(labsRef);
+        // Use onValue to listen for changes
+        onValue(labsRef, (snapshot) => {
+          const labsData = snapshot.val();
+          let labsArray = [];
 
-        let labsArray = [];
+          if (labsData) {
+            labsArray = [...labsArray, ...Object.values(labsData)];
+          }
 
-        if (labsSnapshot.exists()) {
-          const labsData = labsSnapshot.val();
-          labsArray = [...labsArray, ...Object.values(labsData)];
-        }
-
-        setLabs(labsArray);
+          setLabs(labsArray);
+        });
       } catch (error) {
         console.error("Error fetching labs:", error);
       }

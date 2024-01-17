@@ -13,6 +13,7 @@ import ManageLab from "../components/ManageLab";
 import ManageClass from "../components/ManageClass";
 import AddReport from "../components/AddReport";
 import UserReport from "../components/UserReport";
+import DisplayAllReports from "../components/DisplayAllReport";
 
 const Main = () => {
   return (
@@ -60,6 +61,9 @@ const Main = () => {
       </div>
       <div>
         <UserReport />
+      </div>
+      <div>
+        <DisplayAllReports />
       </div>
     </div>
   );
