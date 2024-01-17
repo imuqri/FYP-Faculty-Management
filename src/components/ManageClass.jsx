@@ -15,12 +15,14 @@ import {
   Button,
 } from "react-bootstrap";
 import { getStorage, ref as storageRef, deleteObject } from "firebase/storage";
+import EditClass from "./EditClass";
 
 const ManageClass = () => {
   const [classes, setClasses] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedClass, setSelectedClass] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [editClass, setEditClass] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,6 +83,11 @@ const ManageClass = () => {
     }
   };
 
+  const handleEditCardClick = (classItem) => {
+    setEditClass(classItem);
+    setShowModal(true);
+  };
+
   return (
     <Container className="mt-3 mb-3">
       <Form className="mb-3">
@@ -114,6 +121,19 @@ const ManageClass = () => {
             </Col>
           ))}
       </Row>
+
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+        {editClass && (
+          <EditClass
+            classData={editClass}
+            show={showModal}
+            handleClose={() => {
+              setShowModal(false);
+              setEditClass(null);
+            }}
+          />
+        )}
+      </Modal>
 
       {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
@@ -163,6 +183,12 @@ const ManageClass = () => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => handleEditCardClick(selectedClass)}
+          >
+            Edit
+          </Button>
           <Button variant="danger" onClick={handleDeleteClass}>
             Delete
           </Button>

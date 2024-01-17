@@ -15,12 +15,14 @@ import {
   Modal,
   Button,
 } from "react-bootstrap";
+import EditLab from "./EditLab";
 
 const ManageLab = () => {
   const [labs, setLabs] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedLab, setSelectedLab] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [editLab, setEditLab] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,6 +77,11 @@ const ManageLab = () => {
     }
   };
 
+  const handleEditCardClick = (lab) => {
+    setEditLab(lab);
+    setShowModal(true);
+  };
+
   return (
     <Container className="mt-3 mb-3">
       <Form className="mb-3">
@@ -108,7 +115,18 @@ const ManageLab = () => {
             </Col>
           ))}
       </Row>
-
+      <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
+        {editLab && (
+          <EditLab
+            lab={editLab}
+            show={showModal}
+            handleClose={() => {
+              setShowModal(false);
+              setEditLab(null);
+            }}
+          />
+        )}
+      </Modal>
       {/* Modal */}
       <Modal show={showModal} onHide={handleCloseModal} size="lg" centered>
         <Modal.Header closeButton>
@@ -171,6 +189,12 @@ const ManageLab = () => {
           </Row>
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            variant="primary"
+            onClick={() => handleEditCardClick(selectedLab)}
+          >
+            Edit
+          </Button>
           <Button variant="danger" onClick={handleDeleteLab}>
             Delete
           </Button>
