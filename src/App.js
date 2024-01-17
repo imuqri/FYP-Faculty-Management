@@ -1,7 +1,7 @@
 // App.js
 
 import React, { useState } from "react";
-import { Route, Routes, Navigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { Layout, theme } from "antd";
 import { AuthContextProvider, UserAuth } from "./context/AuthContext";
 import Sidebar from "./components/layouts/Sidebar";
@@ -10,7 +10,6 @@ import Footer from "./components/layouts/Footer";
 import AppRoutes from "./routes/AppRoutes";
 
 import Login from "./pages/Login";
-import Main from "./pages/Main";
 
 const { Sider, Content } = Layout;
 

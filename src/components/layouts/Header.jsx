@@ -31,7 +31,6 @@ const Header = ({ collapsed, setCollapsed }) => {
       <Menu.Item key="logout" icon={<LogoutOutlined />}>
         Logout
       </Menu.Item>
-      {/* Add more menu items as needed */}
     </Menu>
   );
 
@@ -62,10 +61,10 @@ const Header = ({ collapsed, setCollapsed }) => {
       />
 
       <Dropdown
-        overlay={accountMenu}
+        menu={accountMenu}
         placement="bottomRight"
-        visible={dropdownVisible}
-        onVisibleChange={(visible) => setDropdownVisible(visible)}
+        open={dropdownVisible}
+        onOpenChange={(visible) => setDropdownVisible(visible)}
       >
         <Button
           type="text"

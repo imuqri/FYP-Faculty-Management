@@ -11,6 +11,8 @@ import AddClass from "../components/AddClass";
 import DisplayFacility from "../components/DisplayFacility";
 import ManageLab from "../components/ManageLab";
 import ManageClass from "../components/ManageClass";
+import AddReport from "../components/AddReport";
+import UserReport from "../components/UserReport";
 
 const Main = () => {
   return (
@@ -53,8 +55,12 @@ const Main = () => {
       <div>
         <ManageClass />
       </div>
-      <div></div>
-      <div></div>
+      <div>
+        <AddReport />
+      </div>
+      <div>
+        <UserReport />
+      </div>
     </div>
   );
 };
