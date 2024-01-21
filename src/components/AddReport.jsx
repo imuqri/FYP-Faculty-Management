@@ -156,7 +156,6 @@ const AddReport = () => {
 
   return (
     <Container className="mt-3">
-      <h2>Add Report</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Facility Type</Form.Label>
@@ -213,7 +212,7 @@ const AddReport = () => {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit" className="flex-end">
+        <Button variant="primary" type="submit" className="float-end">
           Submit
         </Button>
       </Form>

@@ -121,6 +121,7 @@ const DisplayFacility = () => {
 
   return (
     <Container className="mt-3 mb-3">
+      <h1 className="text-center mb-3">KPPIM FACILITIES</h1>
       <Form className="mb-3">
         <Form.Control
           type="text"

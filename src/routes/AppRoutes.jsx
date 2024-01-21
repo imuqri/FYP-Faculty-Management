@@ -7,6 +7,8 @@ import AddEquipment from "../pages/EquipmentsPage";
 import Account from "../components/Account";
 import { UserAuth } from "../context/AuthContext";
 import Login from "../pages/Login";
+import UserReport from "../pages/MyReportsPage";
+import DisplayFacility from "../pages/FacilitiesPage";
 
 const AppRoutes = () => {
   const { user } = UserAuth();
@@ -23,6 +25,8 @@ const AppRoutes = () => {
       <Route path="/addSoftware" element={<AddSoftware />} />
       <Route path="/addEquipment" element={<AddEquipment />} />
       <Route path="/account" element={<Account />} />
+      <Route path="/myReport" element={<UserReport />} />
+      <Route path="/facilities" element={<DisplayFacility/>} />
     </Routes>
   );
 };

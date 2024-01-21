@@ -8,7 +8,7 @@ const Footer = () => {
         textAlign: "center",
       }}
     >
-      KPPIM Facility Management System V1 ©2023 Created by imuqri
+      KPPIM Facility Management System V1.0 ©2024 Developed by imuqri
     </Layout.Footer>
   );
 };

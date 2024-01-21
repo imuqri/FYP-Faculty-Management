@@ -75,7 +75,6 @@ const UserReport = () => {
 
   return (
     <Container className="mt-3">
-      <h1 className="text-center mb-4">MY REPORTS</h1>
       {reports.length === 0 ? (
         <Card className="mb-3">
           <Card.Body>
@@ -89,7 +88,7 @@ const UserReport = () => {
         </Card>
       ) : (
         <Accordion defaultActiveKey="0">
-          {reports.map((report, index) => (
+          {reports.reverse().map((report, index) => (
             <Accordion.Item key={index} eventKey={index.toString()}>
               <Accordion.Header>
                 <Row>

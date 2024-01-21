@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Container, Button, Card, Modal } from "react-bootstrap";
-import SoftwareList from "../components/SoftwareList";
-import AddSoftware from "../components/AddSoftware";
+import UserReport from "../components/UserReport";
+import AddReport from "../components/AddReport";
 
 const Reports = () => {
   const [showModal, setShowModal] = useState(false);
@@ -17,23 +17,23 @@ const Reports = () => {
           <h3>MY REPORTS</h3>
           <Button
             variant="success"
-            style={{ width: "40px" }}
+           
             onClick={toggleModal}
           >
-            +
+            Add Report
           </Button>
         </Card.Header>
         <Card.Body>
-          <SoftwareList />
+          <UserReport />
         </Card.Body>
       </Card>
 
       <Modal show={showModal} onHide={toggleModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Make A Report</Modal.Title>
+          <Modal.Title>Add Report</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <AddSoftware onClose={toggleModal} />
+          <AddReport onClose={toggleModal} />
         </Modal.Body>
       </Modal>
     </Container>
