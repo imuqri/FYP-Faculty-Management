@@ -172,7 +172,7 @@ const AddLab = () => {
   };
 
   return (
-    <Container className="mt-3 mb-3">
+    <div>
       <Card>
         <Card.Body className="d-flex flex-column">
           <Card.Title as="h2">Add Lab</Card.Title>
@@ -327,7 +327,7 @@ const AddLab = () => {
           </Button>
         </Card.Body>
       </Card>
-    </Container>
+    </div>
   );
 };
 

@@ -11,63 +11,61 @@ import { BsBuildings } from "react-icons/bs";
 import { ImLab } from "react-icons/im";
 import { BiChalkboard } from "react-icons/bi";
 
-
 const sidebarItems = [
   {
     key: "home",
     icon: <HomeOutlined />,
     label: "HOME",
-    path: "/home",
+    path: "/Home",
   },
   {
     key: "addUser",
     icon: <UserAddOutlined />,
     label: "USERS",
-    path: "/add-user",
+    path: "/Users",
   },
   {
     key: "addSoftware",
     icon: <AppstoreAddOutlined />,
     label: "SOFTWARES",
-    path: "/add-software",
+    path: "/Softwares",
   },
   {
     key: "addEquipment",
     icon: <DesktopOutlined />,
     label: "EQUIPMENTS",
-    path: "/add-equipment",
+    path: "/Equipments",
   },
   {
     key: "account",
     icon: <UserOutlined />,
     label: "ACCOUNT",
-    path: "/account",
+    path: "/Account",
   },
   {
     key: "myReport",
     icon: <BookOutlined />,
     label: "MY REPORT",
-    path: "/my-report",
+    path: "/My-report",
   },
   {
     key: "displayFacility",
     icon: <BsBuildings />,
     label: "FACILITIES",
-    path: "/facilities",
+    path: "/Facilities",
   },
   {
     key: "manageLabs",
-    icon: <ImLab/>,
+    icon: <ImLab />,
     label: "MANAGE LABS",
-    path: "/manage-labs",
+    path: "/Manage-labs",
   },
   {
     key: "manageClasses",
     icon: <BiChalkboard />,
     label: "MANAGE CLASSES",
-    path: "/manage-classes",
+    path: "/Manage-classes",
   },
 ];
-
 
 export default sidebarItems;

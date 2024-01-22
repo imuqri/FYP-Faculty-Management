@@ -125,6 +125,9 @@ const UserReport = () => {
                       <strong>Facility Name:</strong> {report.facilityName}
                     </p>
                     <p>
+                      <strong>Report Title:</strong> {report.title}
+                    </p>
+                    <p>
                       <strong>Details:</strong> {report.details}
                     </p>
                     <p>
