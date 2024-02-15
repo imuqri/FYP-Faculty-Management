@@ -40,31 +40,31 @@ const DisplayFacility = () => {
         const labsRef = databaseRef(db, "labs");
         const classesRef = databaseRef(db, "classes");
 
-        // Use onValue to listen for changes
+        // Use onValue to listen for changes for labs
         onValue(labsRef, (snapshot) => {
           const labsData = snapshot.val();
-          let facilitiesArray = [];
+          let labsArray = [];
 
           if (labsData) {
-            facilitiesArray = [...facilitiesArray, ...Object.values(labsData)];
+            labsArray = [...labsArray, ...Object.values(labsData)];
           }
 
-          setFacilities(facilitiesArray);
+          setFacilities((prevFacilities) => [...prevFacilities, ...labsArray]);
         });
 
-        // Use onValue to listen for changes
+        // Use onValue to listen for changes for classes
         onValue(classesRef, (snapshot) => {
           const classesData = snapshot.val();
-          let facilitiesArray = [...facilities];
+          let classesArray = [];
 
           if (classesData) {
-            facilitiesArray = [
-              ...facilitiesArray,
-              ...Object.values(classesData),
-            ];
+            classesArray = [...classesArray, ...Object.values(classesData)];
           }
 
-          setFacilities(facilitiesArray);
+          setFacilities((prevFacilities) => [
+            ...prevFacilities,
+            ...classesArray,
+          ]);
         });
       } catch (error) {
         console.error("Error fetching facilities:", error);
@@ -72,7 +72,7 @@ const DisplayFacility = () => {
     };
 
     fetchData();
-  }, []); // Dependency array to ensure the effect runs only once
+  }, []); 
 
   console.log("facilities", facilities);
 
