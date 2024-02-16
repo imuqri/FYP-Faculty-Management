@@ -11,6 +11,7 @@ import UserReport from "../pages/MyReportsPage";
 import DisplayFacility from "../pages/FacilitiesPage";
 import ManageLab from "../pages/ManageLabsPage";
 import ManageClass from "../pages/ManageClassesPage";
+import AllReport from "../pages/FacilitiesReportsPage";
 
 const AppRoutes = () => {
   const { user } = UserAuth();
@@ -31,6 +32,7 @@ const AppRoutes = () => {
       <Route path="/Facilities" element={<DisplayFacility />} />
       <Route path="/Manage-labs" element={<ManageLab />} />
       <Route path="/Manage-classes" element={<ManageClass />} />
+      <Route path="/Facilities-report" element={<AllReport/>} />
     </Routes>
   );
 };

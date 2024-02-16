@@ -17,7 +17,7 @@ import {
 import { Container, Form, Button } from "react-bootstrap";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 
-const AddReport = () => {
+const AddReport = ({ onClose }) => {
   const [labs, setLabs] = useState([]);
   const [classes, setClasses] = useState([]);
   const [facilityType, setFacilityType] = useState("");
@@ -149,6 +149,9 @@ const AddReport = () => {
       setDetails("");
 
       console.log("Report added successfully!");
+
+      // Close the modal after successful submission
+      onClose();
     } catch (error) {
       console.error("Error adding report:", error);
     }

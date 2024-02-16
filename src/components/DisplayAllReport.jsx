@@ -8,12 +8,15 @@ import {
   Col,
   Button,
   Modal,
+  Tabs,
+  Tab,
 } from "react-bootstrap";
 
 const DisplayAllReports = () => {
   const [reports, setReports] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [activeTab, setActiveTab] = useState("submitted");
 
   useEffect(() => {
     const fetchReports = async () => {
@@ -60,88 +63,189 @@ const DisplayAllReports = () => {
     setShowModal(false);
   };
 
+  const submittedReports = reports.filter(
+    (report) => report.status === "Submitted"
+  );
+  const doneReports = reports.filter((report) => report.status === "Done");
+
   return (
     <Container className="mt-3">
       <h1 className="text-center mb-4">FACILITY REPORTS</h1>
-      {reports.length === 0 ? (
-        <Card className="mb-3">
-          <Card.Body>
-            <div
-              className="d-flex align-items-center justify-content-center"
-              style={{ height: "100%" }}
-            >
-              <p>No reports made</p>
-            </div>
-          </Card.Body>
-        </Card>
-      ) : (
-        <Accordion defaultActiveKey="0">
-          {reports
-            .sort((a, b) => a.facilityName.localeCompare(b.facilityName))
-            .map((report, index) => (
-              <Accordion.Item key={index} eventKey={index.toString()}>
-                <Accordion.Header>
-                  <Row>
-                    <Col>
-                      <strong>
-                        {report.facilityName} - {report.title}
-                      </strong>
-                    </Col>
-                  </Row>
-                  <Col className="text-end" style={{ marginRight: "10px" }}>
-                    {report.status}
-                  </Col>
-                </Accordion.Header>
-                <Accordion.Body>
-                  <Row>
-                    <Col md={6} className="d-flex justify-content-center">
-                      <img
-                        src={report.imageUrl}
-                        alt={report.title}
-                        style={{
-                          width: "100%",
-                          height: "250px",
-                          objectFit: "cover",
-                          borderRadius: "15px",
-                          marginBottom: "20px",
-                        }}
-                      />
-                    </Col>
-                    <Col md={6}>
-                      <p>
-                        <strong>Facility Type:</strong> {report.facilityType}
-                      </p>
-                      <p>
-                        <strong>Facility Name:</strong> {report.facilityName}
-                      </p>
-                      <p>
-                        <strong>Details:</strong> {report.details}
-                      </p>
-                      <p>
-                        <strong>Submitted By:</strong> {report.userEmail}
-                      </p>
-                      <p>
-                        <strong>Date Submitted:</strong>{" "}
-                        {new Date(report.timestamp).toLocaleString()}
-                      </p>
-                      <Col className="text-end mt-5">
-                        {report.status === "Submitted" && (
-                          <Button
-                            onClick={() =>
-                              markAsDone(report.key, report.userId)
-                            }
-                          >
-                            Mark As Done
-                          </Button>
-                        )}
+      <Tabs
+        id="controlled-tab-example"
+        activeKey={activeTab}
+        onSelect={(k) => setActiveTab(k)}
+        className="mb-3"
+      >
+        <Tab eventKey="submitted" title="Submitted Reports">
+          {submittedReports.length === 0 ? (
+            <Card className="mb-3">
+              <Card.Body>
+                <div
+                  className="d-flex align-items-center justify-content-center"
+                  style={{ height: "100%" }}
+                >
+                  <p>No submitted reports</p>
+                </div>
+              </Card.Body>
+            </Card>
+          ) : (
+            <Accordion defaultActiveKey="0">
+              {submittedReports
+                .sort((a, b) => a.facilityName.localeCompare(b.facilityName))
+                .map((report, index) => (
+                  <Accordion.Item key={index} eventKey={index.toString()}>
+                    <Accordion.Header>
+                      <Row>
+                        <Col>
+                          <strong>
+                            {report.facilityName} - {report.title}
+                          </strong>
+                        </Col>
+                      </Row>
+                      <Col className="text-end" style={{ marginRight: "10px" }}>
+                        {report.status}
                       </Col>
-                    </Col>
-                  </Row>
-                </Accordion.Body>
-              </Accordion.Item>
-            ))}
-        </Accordion>
-      )}
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Row>
+                        <Col md={6} className="d-flex justify-content-center">
+                          <img
+                            src={report.imageUrl}
+                            alt={report.title}
+                            style={{
+                              width: "100%",
+                              height: "250px",
+                              objectFit: "cover",
+                              borderRadius: "15px",
+                              marginBottom: "20px",
+                            }}
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <p>
+                            <strong>Facility Type:</strong>{" "}
+                            {report.facilityType}
+                          </p>
+                          <p>
+                            <strong>Facility Name:</strong>{" "}
+                            {report.facilityName}
+                          </p>
+                          <p>
+                            <strong>Details:</strong> {report.details}
+                          </p>
+                          <p>
+                            <strong>Submitted By:</strong> {report.userEmail}
+                          </p>
+                          <p>
+                            <strong>Date Submitted:</strong>{" "}
+                            {new Date(report.timestamp).toLocaleString()}
+                          </p>
+                          <Col className="text-end mt-5">
+                            {report.status === "Submitted" && (
+                              <Button
+                                onClick={() =>
+                                  markAsDone(report.key, report.userId)
+                                }
+                              >
+                                Mark As Done
+                              </Button>
+                            )}
+                          </Col>
+                        </Col>
+                      </Row>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
+            </Accordion>
+          )}
+        </Tab>
+        <Tab eventKey="done" title="Done Reports">
+          {doneReports.length === 0 ? (
+            <Card className="mb-3">
+              <Card.Body>
+                <div
+                  className="d-flex align-items-center justify-content-center"
+                  style={{ height: "100%" }}
+                >
+                  <p>No done reports</p>
+                </div>
+              </Card.Body>
+            </Card>
+          ) : (
+            <Accordion defaultActiveKey="0">
+              {doneReports
+                .sort((a, b) => a.facilityName.localeCompare(b.facilityName))
+                .map((report, index) => (
+                  <Accordion.Item key={index} eventKey={index.toString()}>
+                    <Accordion.Header>
+                      <Row>
+                        <Col>
+                          <strong>
+                            {report.facilityName} - {report.title}
+                          </strong>
+                        </Col>
+                      </Row>
+                      <Col className="text-end" style={{ marginRight: "10px" }}>
+                        {report.status}
+                      </Col>
+                    </Accordion.Header>
+                    <Accordion.Body>
+                      <Row>
+                        <Col md={6} className="d-flex justify-content-center">
+                          <img
+                            src={report.imageUrl}
+                            alt={report.title}
+                            style={{
+                              width: "100%",
+                              height: "250px",
+                              objectFit: "cover",
+                              borderRadius: "15px",
+                              marginBottom: "20px",
+                            }}
+                          />
+                        </Col>
+                        <Col md={6}>
+                          <p>
+                            <strong>Facility Type:</strong>{" "}
+                            {report.facilityType}
+                          </p>
+                          <p>
+                            <strong>Facility Name:</strong>{" "}
+                            {report.facilityName}
+                          </p>
+                          <p>
+                            <strong>Details:</strong> {report.details}
+                          </p>
+                          <p>
+                            <strong>Submitted By:</strong> {report.userEmail}
+                          </p>
+                          <p>
+                            <strong>Date Submitted:</strong>{" "}
+                            {new Date(report.timestamp).toLocaleString()}
+                          </p>
+                          <Col className="text-end mt-5">
+                            {report.status === "Submitted" && (
+                              <Button
+                                onClick={() =>
+                                  markAsDone(report.key, report.userId)
+                                }
+                              >
+                                Mark As Done
+                              </Button>
+                            )}
+                          </Col>
+                        </Col>
+                      </Row>
+                    </Accordion.Body>
+                  </Accordion.Item>
+                ))}
+            </Accordion>
+          )}
+        </Tab>
+      </Tabs>
+
+      {/* Modal */}
       <Modal show={showModal} onHide={() => setShowModal(false)} centered>
         <Modal.Header closeButton>
           <Modal.Title>Confirm Action</Modal.Title>

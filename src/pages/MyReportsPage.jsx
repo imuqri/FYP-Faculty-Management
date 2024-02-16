@@ -14,12 +14,8 @@ const Reports = () => {
     <Container className="mt-3">
       <Card>
         <Card.Header className="d-flex justify-content-between">
-          <h3>MY REPORTS</h3>
-          <Button
-            variant="success"
-           
-            onClick={toggleModal}
-          >
+          <h3> MY REPORTS </h3>
+          <Button variant="success" onClick={toggleModal}>
             Add Report
           </Button>
         </Card.Header>
@@ -30,7 +26,7 @@ const Reports = () => {
 
       <Modal show={showModal} onHide={toggleModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Add Report</Modal.Title>
+          <Modal.Title> Add Report </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <AddReport onClose={toggleModal} />

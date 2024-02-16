@@ -12,13 +12,11 @@ const Users = () => {
 
   return (
     <Container className="mt-5">
-      <Button variant="primary" onClick={toggleModal}>
+      <Button variant="primary" onClick={toggleModal} className="ml-auto">
         Add User
       </Button>
-
       <UserList />
-
-      <Modal show={showModal} onHide={toggleModal}>
+      <Modal show={showModal} onHide={toggleModal} centered>
         <Modal.Header closeButton></Modal.Header>
         <Modal.Body>
           <AddUser onClose={toggleModal} />
