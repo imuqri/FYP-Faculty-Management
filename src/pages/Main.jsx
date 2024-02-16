@@ -1,69 +1,27 @@
 import React from "react";
-import AddEquipment from "../components/AddEquipment";
-import AddSoftware from "../components/AddSoftware";
-import Account from "../components/Account";
-import AddUser from "../components/AddUser";
-import SoftwareList from "../components/SoftwareList";
-import EquipmentList from "../components/EquipmentList";
-import UserList from "../components/UserList";
-import AddLab from "../components/AddLab";
-import AddClass from "../components/AddClass";
-import DisplayFacility from "../components/DisplayFacility";
-import ManageLab from "../components/ManageLab";
-import ManageClass from "../components/ManageClass";
-import AddReport from "../components/AddReport";
-import UserReport from "../components/UserReport";
-import DisplayAllReports from "../components/DisplayAllReport";
+import { Link } from "react-router-dom";
 
 const Main = () => {
   return (
     <div className="mb-5">
-      <h1>ALL COMPONENT</h1>
-
-      <div>
-        <Account />
-      </div>
-      <div>
-        <AddUser />
-      </div>
-      <div>
-        <UserList />
-      </div>
-      <div>
-        <AddSoftware />
-      </div>
-      <div>
-        <SoftwareList />
-      </div>
-      <div>
-        <AddEquipment />
-      </div>
-      <div>
-        <EquipmentList />
-      </div>
-      <div>
-        <AddLab />
-      </div>
-      <div>
-        <AddClass />
-      </div>
-      <div>
-        <DisplayFacility />
-      </div>
-      <div>
-        <ManageLab />
-      </div>
-      <div>
-        <ManageClass />
-      </div>
-      <div>
-        <AddReport />
-      </div>
-      <div>
-        <UserReport />
-      </div>
-      <div>
-        <DisplayAllReports />
+      <h1 className="text-center mt-5 mb-5">
+        WELCOME TO FACULTY MANAGEMENT SYSTEM
+      </h1>
+      <div className="d-flex justify-content-center">
+        <div className="d-flex justify-content-between">
+          <Link
+            to="/My-report"
+            className="btn btn-primary btn-lg rounded flex-fill me-2"
+          >
+            E-REPORT
+          </Link>
+          <Link
+            to="/Facilities"
+            className="btn btn-primary btn-lg rounded flex-fill ms-2"
+          >
+            FACILITIES
+          </Link>
+        </div>
       </div>
     </div>
   );

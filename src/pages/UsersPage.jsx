@@ -12,6 +12,7 @@ const Users = () => {
 
   return (
     <Container className="mt-5">
+      <h1 className="text-center mb-3">MANAGE USERS</h1>
       <Button variant="primary" onClick={toggleModal} className="ml-auto">
         Add User
       </Button>

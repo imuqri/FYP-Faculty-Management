@@ -12,6 +12,7 @@ const Reports = () => {
 
   return (
     <Container className="mt-3">
+      <h1 className="text-center mb-3">MANAGE YOUR REPORTS</h1>
       <Card>
         <Card.Header className="d-flex justify-content-between">
           <h3> MY REPORTS </h3>

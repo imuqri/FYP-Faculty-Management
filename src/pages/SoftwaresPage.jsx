@@ -12,6 +12,7 @@ const Softwares = () => {
 
   return (
     <Container className="mt-3">
+      <h1 className="text-center mb-3">MANAGE SOFTWARES</h1>
       <Card>
         <Card.Header className="d-flex justify-content-between">
           <h3>SOFTWARES</h3>

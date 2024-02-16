@@ -12,6 +12,7 @@ const Equipments = () => {
 
   return (
     <Container className="mt-5">
+      <h1 className="text-center mb-3">MANAGE EQUIPMENTS</h1>
       <Card>
         <Card.Header className="d-flex justify-content-between">
           <h3>EQUIPMENT</h3>

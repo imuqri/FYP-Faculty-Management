@@ -20,6 +20,20 @@ const sidebarItems = [
     roles: ["Super Admin", "Lab Admin", "Class Admin", "Technician", "User"],
   },
   {
+    key: "displayFacility",
+    icon: <BsBuildings />,
+    label: "FACILITIES",
+    path: "/Facilities",
+    roles: ["Super Admin", "Lab Admin", "Class Admin", "Technician", "User"],
+  },
+  {
+    key: "myReport",
+    icon: <BookOutlined />,
+    label: "MY REPORTS",
+    path: "/My-report",
+    roles: ["Super Admin", "Lab Admin", "Class Admin", "Technician", "User"],
+  },
+  {
     key: "addUser",
     icon: <UserAddOutlined />,
     label: "USERS",
@@ -41,13 +55,6 @@ const sidebarItems = [
     roles: ["Super Admin", "Lab Admin", "Class Admin", "Technician"],
   },
   {
-    key: "displayFacility",
-    icon: <BsBuildings />,
-    label: "FACILITIES",
-    path: "/Facilities",
-    roles: ["Super Admin", "Lab Admin", "Class Admin", "Technician", "User"],
-  },
-  {
     key: "manageLabs",
     icon: <ImLab />,
     label: "MANAGE LABS",
@@ -61,13 +68,7 @@ const sidebarItems = [
     path: "/Manage-classes",
     roles: ["Super Admin", "Class Admin"],
   },
-  {
-    key: "myReport",
-    icon: <BookOutlined />,
-    label: "MY REPORTS",
-    path: "/My-report",
-    roles: ["Super Admin", "Lab Admin", "Class Admin", "Technician", "User"],
-  },
+
   {
     key: "allReport",
     icon: <BookOutlined />,

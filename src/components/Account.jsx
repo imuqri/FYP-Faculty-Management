@@ -41,6 +41,7 @@ const Account = () => {
 
   return (
     <div className="container mt-5">
+      <h1 className="text-center mb-3">USER ACCOUNT</h1>
       <Card>
         <Card.Body className="d-flex flex-column">
           <Card.Title as="h2">Account</Card.Title>
