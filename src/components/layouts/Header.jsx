@@ -7,9 +7,13 @@ import {
   FileTextOutlined,
   LogoutOutlined,
 } from "@ant-design/icons";
+import { Link, useNavigate } from "react-router-dom";
+import { UserAuth } from "../../context/AuthContext";
 
 const Header = ({ collapsed, setCollapsed }) => {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const { user, logout } = UserAuth();
+  const navigate = useNavigate();
 
   const handleMenuClick = (e) => {
     if (e.key === "logout") {
@@ -20,15 +24,27 @@ const Header = ({ collapsed, setCollapsed }) => {
     setDropdownVisible(false); // Hide the dropdown after clicking an option
   };
 
+  const handleLogout = async () => {
+    try {
+      await logout();
+      navigate("/");
+      console.log("logged out");
+    } catch (e) {
+      console.log(e.message);
+    }
+  };
+
   const accountMenu = (
     <Menu onClick={handleMenuClick} style={{ minWidth: "150px" }}>
       <Menu.Item key="account" icon={<UserOutlined />}>
+        <Link to="/Account"></Link>
         My Account
       </Menu.Item>
       <Menu.Item key="myreport" icon={<FileTextOutlined />}>
-        My Report
+        <Link to="/My-report"></Link>
+        My Reports
       </Menu.Item>
-      <Menu.Item key="logout" icon={<LogoutOutlined />}>
+      <Menu.Item key="logout" icon={<LogoutOutlined />} onClick={handleLogout}>
         Logout
       </Menu.Item>
     </Menu>
