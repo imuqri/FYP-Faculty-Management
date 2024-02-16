@@ -53,7 +53,6 @@ const AddUser = () => {
               >
                 <option value="User">User</option>
                 <option value="Technician">Technician</option>
-                <option value="Technician Admin">Technician Admin</option>
                 <option value="Class Admin">Class Admin</option>
                 <option value="Lab Admin">Lab Admin</option>
                 <option value="Super Admin">Super Admin</option>
