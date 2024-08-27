@@ -16,7 +16,7 @@ const ManageLabsPage = () => {
       <Row>
         <Col xs={12} md={6} className="text-md-right">
           <Button variant="primary" onClick={handleShow}>
-            Add Labs
+            Add Class
           </Button>
         </Col>
       </Row>
@@ -26,7 +26,7 @@ const ManageLabsPage = () => {
 
       <Modal show={show} onHide={handleClose} centered>
         <Modal.Body>
-          <AddClass />s
+          <AddClass />
         </Modal.Body>
       </Modal>
     </Container>
